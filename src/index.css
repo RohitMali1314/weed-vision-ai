@@ -8,45 +8,61 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 9%;
+    /* Agriculture-inspired background - warm cream like wheat fields */
+    --background: 45 15% 97%;
+    --foreground: 25 25% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 9%;
+    /* Cards with earthy paper texture feel */
+    --card: 42 20% 95%;
+    --card-foreground: 25 25% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 9%;
+    --popover: 42 20% 95%;
+    --popover-foreground: 25 25% 15%;
 
-    --primary: 142 76% 36%;
-    --primary-foreground: 0 0% 98%;
+    /* Primary: Rich forest green like healthy crops */
+    --primary: 140 60% 35%;
+    --primary-foreground: 45 15% 97%;
 
-    --secondary: 142 25% 94%;
-    --secondary-foreground: 142 76% 20%;
+    /* Secondary: Soft wheat/grain color */
+    --secondary: 45 35% 88%;
+    --secondary-foreground: 140 60% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Light soil/earth tones */
+    --muted: 35 20% 92%;
+    --muted-foreground: 35 15% 45%;
 
-    --accent: 142 25% 94%;
-    --accent-foreground: 142 76% 20%;
+    /* Accent: Fresh spring green */
+    --accent: 110 45% 75%;
+    --accent-foreground: 140 60% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 142 76% 36%;
+    /* Borders: Subtle earth tone */
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 140 60% 35%;
 
-    /* Custom design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 28%));
-    --gradient-secondary: linear-gradient(135deg, hsl(142 25% 94%), hsl(0 0% 100%));
-    --shadow-soft: 0 2px 8px -2px hsl(142 76% 36% / 0.1);
-    --shadow-medium: 0 4px 16px -4px hsl(142 76% 36% / 0.15);
-    --shadow-strong: 0 8px 32px -8px hsl(142 76% 36% / 0.25);
+    /* Agriculture-themed gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(140 60% 35%), hsl(95 45% 40%));
+    --gradient-secondary: linear-gradient(135deg, hsl(45 35% 88%), hsl(45 15% 97%));
+    --gradient-field: linear-gradient(180deg, hsl(110 30% 85%) 0%, hsl(140 40% 75%) 50%, hsl(95 35% 65%) 100%);
+    --gradient-earth: linear-gradient(45deg, hsl(35 40% 75%), hsl(25 35% 70%));
     
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 98%;
+    /* Agriculture-themed shadows with earth tones */
+    --shadow-soft: 0 2px 8px -2px hsl(35 30% 60% / 0.15);
+    --shadow-medium: 0 4px 16px -4px hsl(35 30% 60% / 0.2);
+    --shadow-strong: 0 8px 32px -8px hsl(35 30% 60% / 0.3);
+    --shadow-crop: 0 4px 20px -4px hsl(140 60% 35% / 0.25);
+    
+    /* Themed colors for agriculture context */
+    --success: 140 60% 35%;
+    --success-foreground: 45 15% 97%;
     --warning: 45 93% 58%;
     --warning-foreground: 45 93% 15%;
+    --soil: 25 35% 70%;
+    --wheat: 45 60% 75%;
+    --crop: 95 45% 55%;
 
     --radius: 0.5rem;
 
