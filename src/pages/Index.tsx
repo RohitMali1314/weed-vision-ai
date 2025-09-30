@@ -51,10 +51,10 @@ const Index = () => {
     
     try {
       const formData = new FormData();
-      formData.append('image', selectedImage);
+      formData.append('file', selectedImage);  // 👈 must match Flask's "file"
 
-      // Replace with your Flask backend URL
-      const response = await fetch('http://127.0.0.1:5000', {
+      // Call Flask backend /predict route
+      const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         body: formData,
       });
