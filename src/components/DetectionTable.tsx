@@ -34,6 +34,8 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
     );
   }
 
+  const hasBoundingBoxes = detections.some(d => d.bbox);
+
   return (
     <div className="space-y-4">
       <div className="rounded-lg border">
@@ -43,7 +45,7 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
               <TableHead className="w-[100px]">#</TableHead>
               <TableHead>Label</TableHead>
               <TableHead>Confidence</TableHead>
-              <TableHead className="text-right">Bounding Box</TableHead>
+              {hasBoundingBoxes && <TableHead className="text-right">Bounding Box</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -68,9 +70,11 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className="text-right text-sm text-muted-foreground">
-                  [{detection.bbox.map(coord => coord.toFixed(0)).join(', ')}]
-                </TableCell>
+                {hasBoundingBoxes && (
+                  <TableCell className="text-right text-sm text-muted-foreground">
+                    {detection.bbox ? `[${detection.bbox.map(coord => coord.toFixed(0)).join(', ')}]` : 'N/A'}
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

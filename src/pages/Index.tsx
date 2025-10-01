@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 export interface Detection {
   label: string;
   confidence: number;
-  bbox: [number, number, number, number];
+  bbox?: [number, number, number, number];
 }
 
 export interface PredictionResult {
