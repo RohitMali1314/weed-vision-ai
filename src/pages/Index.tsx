@@ -3,6 +3,7 @@ import { Camera, Upload, Loader2 } from "lucide-react";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
+import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -13,10 +14,18 @@ export interface Detection {
   bbox?: [number, number, number, number];
 }
 
+export interface FertilizerData {
+  name: string;
+  quantity: string;
+  frequency: string;
+  type?: string;
+}
+
 export interface PredictionResult {
   detections: Detection[];
   result_image_url: string;
   original_image_url: string;
+  fertilizers?: FertilizerData[];
 }
 
 const Index = () => {
@@ -205,22 +214,29 @@ const Index = () => {
 
             {/* Detection Results Table with farm theme */}
             {results && (
-              <Card className="shadow-crop border-2 border-accent/30 bg-card/90 backdrop-blur-sm">
-                <CardHeader className="bg-gradient-to-r from-accent/10 to-crop/10 border-b border-accent/20">
-                  <CardTitle className="flex items-center gap-3 text-xl">
-                    <div className="p-2 bg-accent/20 rounded-lg">
-                      <span className="text-xl">🌱</span>
-                    </div>
-                    Field Analysis Results
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    🎯 Detected {results.detections.length} weed instances in your crop field
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-8">
-                  <DetectionTable detections={results.detections} />
-                </CardContent>
-              </Card>
+              <>
+                <Card className="shadow-crop border-2 border-accent/30 bg-card/90 backdrop-blur-sm">
+                  <CardHeader className="bg-gradient-to-r from-accent/10 to-crop/10 border-b border-accent/20">
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <div className="p-2 bg-accent/20 rounded-lg">
+                        <span className="text-xl">🌱</span>
+                      </div>
+                      Field Analysis Results
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      🎯 Detected {results.detections.length} weed instances in your crop field
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-8">
+                    <DetectionTable detections={results.detections} />
+                  </CardContent>
+                </Card>
+                
+                {/* Fertilizer Recommendations */}
+                {results.fertilizers && results.fertilizers.length > 0 && (
+                  <FertilizerRecommendations fertilizers={results.fertilizers} />
+                )}
+              </>
             )}
           </div>
 
