@@ -13,6 +13,26 @@ interface FertilizerRecommendationsProps {
   fertilizers: FertilizerData[];
 }
 
+// Convert acres to hectares (1 acre = 0.4047 hectares)
+const convertToIndianUnits = (quantity: string): string => {
+  // Match pattern like "0.5 kg per acre" or "60 kg per acre"
+  const acrePattern = /(\d+(?:\.\d+)?(?:–|—|-|\u2013|\u2014)\d+(?:\.\d+)?|\d+(?:\.\d+)?)\s*(kg|g|l|ml)\s*per\s*acre/gi;
+  
+  return quantity.replace(acrePattern, (match, amount, unit) => {
+    // Handle range (e.g., "0.5–1.0")
+    if (amount.includes('–') || amount.includes('—') || amount.includes('-') || amount.includes('\u2013') || amount.includes('\u2014')) {
+      const parts = amount.split(/[–—-\u2013\u2014]/).map((p: string) => p.trim());
+      const converted = parts.map((p: string) => (parseFloat(p) * 2.47).toFixed(1));
+      return `${converted.join('–')} ${unit} per hectare`;
+    }
+    
+    // Single value
+    const numValue = parseFloat(amount);
+    const converted = (numValue * 2.47).toFixed(1);
+    return `${converted} ${unit} per hectare`;
+  });
+};
+
 export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendationsProps) => {
   if (!fertilizers || fertilizers.length === 0) {
     return null;
@@ -57,7 +77,7 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className="bg-crop/10 border-crop">
-                      {fertilizer.quantity}
+                      {convertToIndianUnits(fertilizer.quantity)}
                     </Badge>
                   </TableCell>
                   <TableCell>
