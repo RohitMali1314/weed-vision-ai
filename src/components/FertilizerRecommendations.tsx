@@ -13,17 +13,30 @@ interface FertilizerRecommendationsProps {
   fertilizers: FertilizerData[];
 }
 
+// Normalize text by replacing all types of dashes with simple ASCII hyphen
+const normalizeText = (text: string): string => {
+  return text
+    .replace(/â€"/g, '-')  // Replace garbled en-dash
+    .replace(/–/g, '-')    // Replace en-dash
+    .replace(/—/g, '-')    // Replace em-dash
+    .replace(/\u2013/g, '-') // Replace Unicode en-dash
+    .replace(/\u2014/g, '-'); // Replace Unicode em-dash
+};
+
 // Convert acres to hectares (1 acre = 0.4047 hectares)
 const convertToIndianUnits = (quantity: string): string => {
-  // Match pattern like "0.5 kg per acre" or "60 kg per acre"
-  const acrePattern = /(\d+(?:\.\d+)?(?:[–—\-\u2013\u2014]\d+(?:\.\d+)?)?)\s*(kg|g|l|ml)\s*per\s*acre/gi;
+  // First normalize the text
+  const normalized = normalizeText(quantity);
   
-  return quantity.replace(acrePattern, (match, amount, unit) => {
-    // Handle range (e.g., "0.5–1.0")
-    if (amount.includes('–') || amount.includes('—') || amount.includes('-') || amount.includes('\u2013') || amount.includes('\u2014')) {
-      const parts = amount.split(/[–—\u2013\u2014\-]/).map((p: string) => p.trim());
+  // Match pattern like "0.5 kg per acre" or "60 kg per acre"
+  const acrePattern = /(\d+(?:\.\d+)?(?:-\d+(?:\.\d+)?)?)\s*(kg|g|l|ml)\s*per\s*acre/gi;
+  
+  return normalized.replace(acrePattern, (match, amount, unit) => {
+    // Handle range (e.g., "0.5-1.0")
+    if (amount.includes('-')) {
+      const parts = amount.split('-').map((p: string) => p.trim());
       const converted = parts.map((p: string) => (parseFloat(p) * 2.47).toFixed(1));
-      return `${converted.join('–')} ${unit} per hectare`;
+      return `${converted.join('-')} ${unit} per hectare`;
     }
     
     // Single value
@@ -69,23 +82,23 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                   <TableCell className="font-medium text-muted-foreground">
                     {index + 1}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">🧪</span>
-                      <span className="font-semibold">{fertilizer.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-crop/10 border-crop">
-                      {convertToIndianUnits(fertilizer.quantity)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm">📅</span>
-                      <span className="text-sm">{fertilizer.frequency}</span>
-                    </div>
-                  </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🧪</span>
+                    <span className="font-semibold">{normalizeText(fertilizer.name)}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className="bg-crop/10 border-crop">
+                    {convertToIndianUnits(fertilizer.quantity)}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">📅</span>
+                    <span className="text-sm">{normalizeText(fertilizer.frequency)}</span>
+                  </div>
+                </TableCell>
                   {fertilizers.some(f => f.type) && (
                     <TableCell>
                       {fertilizer.type && (

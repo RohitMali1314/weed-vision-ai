@@ -9,6 +9,16 @@ import {
 } from "@/components/ui/table";
 import { Detection } from "@/pages/Index";
 
+// Normalize text by replacing all types of dashes with simple ASCII hyphen
+const normalizeText = (text: string): string => {
+  return text
+    .replace(/â€"/g, '-')  // Replace garbled en-dash
+    .replace(/–/g, '-')    // Replace en-dash
+    .replace(/—/g, '-')    // Replace em-dash
+    .replace(/\u2013/g, '-') // Replace Unicode en-dash
+    .replace(/\u2014/g, '-'); // Replace Unicode em-dash
+};
+
 interface DetectionTableProps {
   detections: Detection[];
 }
@@ -57,7 +67,7 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline">
-                    {detection.label}
+                    {normalizeText(detection.label)}
                   </Badge>
                 </TableCell>
                 <TableCell>
@@ -74,7 +84,7 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                 <TableCell>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="text-base">🧪</span>
-                    <span>{detection.fertilizer || 'N/A'}</span>
+                    <span>{detection.fertilizer ? normalizeText(detection.fertilizer) : 'N/A'}</span>
                   </div>
                 </TableCell>
                 {hasBoundingBoxes && (
