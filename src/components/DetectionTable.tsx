@@ -45,6 +45,7 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
               <TableHead className="w-[100px]">#</TableHead>
               <TableHead>Label</TableHead>
               <TableHead>Confidence</TableHead>
+              <TableHead>Fertilizer</TableHead>
               {hasBoundingBoxes && <TableHead className="text-right">Bounding Box</TableHead>}
             </TableRow>
           </TableHeader>
@@ -68,6 +69,12 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                       {detection.confidence >= 90 ? "High" : 
                        detection.confidence >= 75 ? "Medium" : "Low"}
                     </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="text-base">🧪</span>
+                    <span>{detection.fertilizer || 'N/A'}</span>
                   </div>
                 </TableCell>
                 {hasBoundingBoxes && (

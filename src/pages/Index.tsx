@@ -12,6 +12,9 @@ export interface Detection {
   label: string;
   confidence: number;
   bbox?: [number, number, number, number];
+  fertilizer?: string;
+  quantity?: string;
+  frequency?: string;
 }
 
 export interface FertilizerData {
@@ -73,6 +76,25 @@ const Index = () => {
       }
 
       const result: PredictionResult = await response.json();
+      
+      // Extract unique fertilizers from detections
+      const uniqueFertilizers = Array.from(
+        new Map(
+          result.detections
+            .filter(d => d.fertilizer && d.quantity && d.frequency)
+            .map(d => [
+              d.fertilizer,
+              {
+                name: d.fertilizer!,
+                quantity: d.quantity!,
+                frequency: d.frequency!,
+                type: d.label
+              }
+            ])
+        ).values()
+      );
+      
+      result.fertilizers = uniqueFertilizers;
       setResults(result);
       
       toast({
