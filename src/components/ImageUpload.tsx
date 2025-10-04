@@ -14,6 +14,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const { toast } = useToast();
+  const [isCameraReady, setIsCameraReady] = useState(false);
 
   // Cleanup camera when component unmounts or stream changes
   useEffect(() => {
@@ -44,6 +45,14 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
     if (stream) {
       stream.getTracks().forEach((t) => t.stop());
       setStream(null);
+    }
+    setIsCameraReady(false);
+
+    // If running inside an iframe, many browsers block camera. Fallback to native capture.
+    if (window.self !== window.top) {
+      console.warn('[ImageUpload] Detected iframe context; falling back to file input capture.');
+      fileInputRef.current?.click();
+      return;
     }
 
     if (!navigator.mediaDevices?.getUserMedia) {
@@ -77,16 +86,27 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       const video = videoRef.current;
       if (video) {
         video.srcObject = mediaStream;
-        // Ensure playback starts after metadata is ready (iOS Safari)
-        const tryPlay = () => {
-          video.play().catch(() => {
-            /* ignore autoplay errors */
-          });
+        // iOS Safari requirements
+        video.setAttribute('playsinline', 'true');
+        video.muted = true;
+
+        const markReady = (e?: Event) => {
+          console.log('[ImageUpload] video event', e?.type, 'readyState', video.readyState);
+          if (video.readyState >= 2) setIsCameraReady(true);
         };
-        if (video.readyState >= 1) {
-          tryPlay();
-        } else {
-          video.onloadedmetadata = () => tryPlay();
+
+        video.onloadedmetadata = () => {
+          console.log('[ImageUpload] loadedmetadata');
+          video.play()
+            .then(() => console.log('[ImageUpload] video.play() resolved'))
+            .catch((err) => console.warn('[ImageUpload] video.play() error', err));
+        };
+        video.onloadeddata = markReady as any;
+        video.oncanplay = markReady as any;
+        video.onplaying = markReady as any;
+
+        if (video.readyState >= 2) {
+          setIsCameraReady(true);
         }
       }
     } catch (error: any) {
@@ -108,10 +128,18 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       stream.getTracks().forEach(track => track.stop());
       setStream(null);
     }
+    setIsCameraReady(false);
     setIsCameraOpen(false);
   };
 
   const captureImage = () => {
+    if (!isCameraReady) {
+      toast({
+        title: "Camera not ready",
+        description: "Please wait for the preview before capturing.",
+      });
+      return;
+    }
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -175,8 +203,11 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
             <X className="h-4 w-4" />
           </Button>
         </div>
+        {!isCameraReady && (
+          <p className="text-sm text-muted-foreground">Initializing camera...</p>
+        )}
         <div className="flex gap-2">
-          <Button onClick={captureImage} className="flex-1">
+          <Button onClick={captureImage} className="flex-1" disabled={!isCameraReady}>
             <Camera className="h-4 w-4 mr-2" />
             Capture
           </Button>
