@@ -39,13 +39,19 @@ const Index = () => {
   const { toast } = useToast();
 
   const handleImageSelect = (file: File) => {
+    console.log('[Index] handleImageSelect called with file:', file.name, file.type, file.size);
     setSelectedImage(file);
     setResults(null);
     
     const reader = new FileReader();
     reader.onload = (e) => {
+      console.log('[Index] FileReader onload - preview ready');
       setImagePreview(e.target?.result as string);
     };
+    reader.onerror = (e) => {
+      console.error('[Index] FileReader error:', e);
+    };
+    console.log('[Index] Starting FileReader.readAsDataURL');
     reader.readAsDataURL(file);
   };
 

@@ -26,17 +26,27 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   }, [stream]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[ImageUpload] handleFileSelect triggered', event.target.files);
     const file = event.target.files?.[0];
     if (file) {
+      console.log('[ImageUpload] File selected:', file.name, file.type, file.size);
       if (file.type.startsWith('image/')) {
+        console.log('[ImageUpload] Valid image, calling onImageSelect');
         onImageSelect(file);
+        // Reset file input so same file can be selected again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } else {
+        console.error('[ImageUpload] Invalid file type:', file.type);
         toast({
           title: "Invalid file type",
           description: "Please select an image file",
           variant: "destructive",
         });
       }
+    } else {
+      console.warn('[ImageUpload] No file selected');
     }
   };
 
