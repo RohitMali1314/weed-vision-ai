@@ -113,6 +113,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
             ref={videoRef}
             autoPlay
             playsInline
+            muted
             className="w-full h-64 object-cover rounded-lg bg-black"
           />
           <Button
