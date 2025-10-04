@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Camera, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +14,15 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const { toast } = useToast();
+
+  // Cleanup camera when component unmounts or stream changes
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((t) => t.stop());
+      }
+    };
+  }, [stream]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -31,24 +40,65 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   };
 
   const openCamera = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-        audio: false,
+    // Stop any existing streams first
+    if (stream) {
+      stream.getTracks().forEach((t) => t.stop());
+      setStream(null);
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      toast({
+        title: "Camera unsupported",
+        description: "Your browser doesn't support camera access.",
+        variant: "destructive",
       });
-      
+      return;
+    }
+
+    try {
+      let mediaStream: MediaStream;
+      try {
+        // Prefer back camera on mobile
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: 'environment' } },
+          audio: false,
+        });
+      } catch (err) {
+        // Fallback to any available camera
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+      }
+
       setStream(mediaStream);
       setIsCameraOpen(true);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
+
+      const video = videoRef.current;
+      if (video) {
+        video.srcObject = mediaStream;
+        // Ensure playback starts after metadata is ready (iOS Safari)
+        const tryPlay = () => {
+          video.play().catch(() => {
+            /* ignore autoplay errors */
+          });
+        };
+        if (video.readyState >= 1) {
+          tryPlay();
+        } else {
+          video.onloadedmetadata = () => tryPlay();
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error accessing camera:', error);
+      let description = "Please allow camera access to capture images";
+      if (error?.name === 'NotAllowedError') description = 'Camera permission denied. Enable it in your browser settings.';
+      if (error?.name === 'NotFoundError') description = 'No camera found on this device.';
+      if (window.isSecureContext === false) description = 'Camera requires HTTPS. Please open the app over https://';
       toast({
-        title: "Camera access denied",
-        description: "Please allow camera access to capture images",
-        variant: "destructive",
+        title: 'Camera error',
+        description,
+        variant: 'destructive',
       });
     }
   };
