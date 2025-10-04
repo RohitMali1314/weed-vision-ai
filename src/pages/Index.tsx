@@ -39,19 +39,13 @@ const Index = () => {
   const { toast } = useToast();
 
   const handleImageSelect = (file: File) => {
-    console.log('[Index] handleImageSelect called with file:', file.name, file.type, file.size);
     setSelectedImage(file);
     setResults(null);
     
     const reader = new FileReader();
     reader.onload = (e) => {
-      console.log('[Index] FileReader onload - preview ready');
       setImagePreview(e.target?.result as string);
     };
-    reader.onerror = (e) => {
-      console.error('[Index] FileReader error:', e);
-    };
-    console.log('[Index] Starting FileReader.readAsDataURL');
     reader.readAsDataURL(file);
   };
 
@@ -72,7 +66,7 @@ const Index = () => {
       formData.append('file', selectedImage);  // 👈 must match Flask's "file"
 
       // Call Flask backend /predict route
-      const response = await fetch('https://nonhyperbolical-lateritious-elizbeth.ngrok-free.dev/predict', {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         body: formData,
       });
@@ -298,20 +292,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      {/* Footer with team names */}
-      <footer className="relative z-10 py-8 mt-16 border-t border-primary/20 bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">Developed by</p>
-            <div className="flex flex-wrap justify-center gap-4 text-base font-medium text-foreground">
-              <span className="px-4 py-2 bg-primary/10 rounded-full">Rohit Mali</span>
-              <span className="px-4 py-2 bg-primary/10 rounded-full">Shivam Narevekar</span>
-              <span className="px-4 py-2 bg-primary/10 rounded-full">Sakshi Padalkar</span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
