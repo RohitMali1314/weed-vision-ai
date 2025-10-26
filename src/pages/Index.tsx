@@ -4,6 +4,7 @@ import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
 import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
+import { SupportChat } from "@/components/SupportChat";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -292,6 +293,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+      
+      <SupportChat />
     </div>
   );
 };
