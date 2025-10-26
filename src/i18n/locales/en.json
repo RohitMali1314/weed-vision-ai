@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "title": "Weed Detection",
+    "subtitle": "using Deep Learning",
+    "description": "Advanced AI-powered precision agriculture • Protect your crops with YOLOv11 technology",
+    "realtime": "Real-time Detection",
+    "accuracy": "High Accuracy",
+    "farmReady": "Farm-Ready"
+  },
+  "upload": {
+    "title": "Field Image Upload",
+    "description": "Upload a crop field image or capture directly from your device camera",
+    "dropzone": "Drop your image here",
+    "browse": "or click to browse files",
+    "supports": "Supports JPG, PNG, WEBP",
+    "chooseFile": "Choose File",
+    "useCamera": "Use Camera",
+    "ready": "Ready for Analysis",
+    "analyze": "Analyze Field Image",
+    "analyzing": "Analyzing Crop Field...",
+    "reset": "Reset",
+    "capture": "Capture",
+    "cancel": "Cancel"
+  },
+  "results": {
+    "title": "Field Analysis Results",
+    "detected": "Detected",
+    "instances": "weed instances in your crop field",
+    "readyTitle": "Ready for Field Analysis",
+    "readyDescription": "Upload your crop field image to detect weeds and protect your harvest with AI precision",
+    "cropProtection": "Crop Protection",
+    "precisionDetection": "Precision Detection",
+    "originalImage": "Original Field Image",
+    "detectionResults": "Weed Detection Results"
+  },
+  "detection": {
+    "weedType": "Weed Type",
+    "confidence": "Confidence",
+    "location": "Location"
+  },
+  "fertilizer": {
+    "title": "Fertilizer Recommendations",
+    "description": "Recommended treatments based on detected weeds",
+    "name": "Fertilizer Name",
+    "quantity": "Quantity",
+    "frequency": "Application Frequency",
+    "forWeed": "For Weed Type"
+  },
+  "toast": {
+    "noImage": "No image selected",
+    "selectImage": "Please select an image first",
+    "complete": "Analysis complete!",
+    "found": "Found",
+    "detections": "detections",
+    "failed": "Processing failed",
+    "backendError": "Failed to process image. Make sure your Flask backend is running.",
+    "invalidType": "Invalid file type",
+    "imageOnly": "Please select an image file",
+    "cameraError": "Camera access denied",
+    "allowCamera": "Please allow camera access to capture images"
+  }
+}

@@ -5,9 +5,11 @@ import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
 import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
 import { SupportChat } from "@/components/SupportChat";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 export interface Detection {
   label: string;
@@ -38,6 +40,7 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [results, setResults] = useState<PredictionResult | null>(null);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -53,8 +56,8 @@ const Index = () => {
   const handleProcessImage = async () => {
     if (!selectedImage) {
       toast({
-        title: "No image selected",
-        description: "Please select an image first",
+        title: t("toast.noImage"),
+        description: t("toast.selectImage"),
         variant: "destructive",
       });
       return;
@@ -99,14 +102,14 @@ const Index = () => {
       setResults(result);
       
       toast({
-        title: "Analysis complete!",
-        description: `Found ${result.detections.length} detections`,
+        title: t("toast.complete"),
+        description: `${t("toast.found")} ${result.detections.length} ${t("toast.detections")}`,
       });
     } catch (error) {
       console.error('Error processing image:', error);
       toast({
-        title: "Processing failed",
-        description: "Failed to process image. Make sure your Flask backend is running.",
+        title: t("toast.failed"),
+        description: t("toast.backendError"),
         variant: "destructive",
       });
     } finally {
@@ -133,7 +136,11 @@ const Index = () => {
       {/* Hero Section with farm-inspired design */}
       <div className="relative bg-gradient-primary text-primary-foreground py-20 shadow-crop">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex justify-end mb-4">
+            <LanguageSelector />
+          </div>
+          <div className="text-center">
           <div className="mb-6">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4 backdrop-blur-sm">
               <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
@@ -143,25 +150,26 @@ const Index = () => {
               </svg>
             </div>
           </div>
-          <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
-            🌾 Weed Detection
-            <span className="block text-3xl md:text-5xl mt-2 opacity-90">using Deep Learning</span>
-          </h1>
-          <p className="text-xl md:text-2xl opacity-90 max-w-4xl mx-auto leading-relaxed">
-            Advanced AI-powered precision agriculture • Protect your crops with YOLOv11 technology
-          </p>
-          <div className="mt-8 flex justify-center space-x-8 text-sm opacity-80">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent rounded-full"></div>
-              <span>Real-time Detection</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-wheat rounded-full"></div>
-              <span>High Accuracy</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-crop rounded-full"></div>
-              <span>Farm-Ready</span>
+            <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
+              🌾 {t("hero.title")}
+              <span className="block text-3xl md:text-5xl mt-2 opacity-90">{t("hero.subtitle")}</span>
+            </h1>
+            <p className="text-xl md:text-2xl opacity-90 max-w-4xl mx-auto leading-relaxed">
+              {t("hero.description")}
+            </p>
+            <div className="mt-8 flex justify-center space-x-8 text-sm opacity-80">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-accent rounded-full"></div>
+                <span>{t("hero.realtime")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-wheat rounded-full"></div>
+                <span>{t("hero.accuracy")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-crop rounded-full"></div>
+                <span>{t("hero.farmReady")}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -180,10 +188,10 @@ const Index = () => {
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Upload className="h-6 w-6 text-primary" />
                   </div>
-                  Field Image Upload
+                  {t("upload.title")}
                 </CardTitle>
                 <CardDescription className="text-base">
-                  Upload a crop field image or capture directly from your device camera
+                  {t("upload.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6 p-8">
@@ -199,7 +207,7 @@ const Index = () => {
                         className="relative w-full h-72 object-cover rounded-xl border-2 border-primary/30 shadow-medium"
                       />
                       <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-                        📸 Ready for Analysis
+                        📸 {t("upload.ready")}
                       </div>
                     </div>
                     
@@ -213,11 +221,11 @@ const Index = () => {
                         {isProcessing ? (
                           <>
                             <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                            🔍 Analyzing Crop Field...
+                            🔍 {t("upload.analyzing")}
                           </>
                         ) : (
                           <>
-                            🧠 Analyze Field Image
+                            🧠 {t("upload.analyze")}
                           </>
                         )}
                       </Button>
@@ -227,7 +235,7 @@ const Index = () => {
                         className="px-8 h-12 border-2 border-primary/30 hover:bg-primary/10"
                         size="lg"
                       >
-                        🔄 Reset
+                        🔄 {t("upload.reset")}
                       </Button>
                     </div>
                   </div>
@@ -244,10 +252,10 @@ const Index = () => {
                       <div className="p-2 bg-accent/20 rounded-lg">
                         <span className="text-xl">🌱</span>
                       </div>
-                      Field Analysis Results
+                      {t("results.title")}
                     </CardTitle>
                     <CardDescription className="text-base">
-                      🎯 Detected {results.detections.length} weed instances in your crop field
+                      🎯 {t("results.detected")} {results.detections.length} {t("results.instances")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="p-8">
@@ -273,18 +281,18 @@ const Index = () => {
                   <div className="mb-6 p-6 bg-gradient-earth/20 rounded-2xl">
                     <Camera className="h-20 w-20 text-soil" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">🚜 Ready for Field Analysis</h3>
+                  <h3 className="text-2xl font-bold mb-4 text-foreground">🚜 {t("results.readyTitle")}</h3>
                   <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
-                    Upload your crop field image to detect weeds and protect your harvest with AI precision
+                    {t("results.readyDescription")}
                   </p>
                   <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🌾</span>
-                      <span>Crop Protection</span>
+                      <span>{t("results.cropProtection")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🎯</span>
-                      <span>Precision Detection</span>
+                      <span>{t("results.precisionDetection")}</span>
                     </div>
                   </div>
                 </CardContent>
