@@ -58,5 +58,22 @@
     "imageOnly": "Please select an image file",
     "cameraError": "Camera access denied",
     "allowCamera": "Please allow camera access to capture images"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "items": "{{count}} item in your cart",
+    "items_other": "{{count}} items in your cart",
+    "total": "Total",
+    "checkout": "Checkout with Shopify",
+    "creatingCheckout": "Creating Checkout...",
+    "checkoutOpened": "Opening checkout in new tab",
+    "checkoutFailed": "Failed to create checkout",
+    "added": "Added to cart",
+    "productNotFound": "Product not available in store",
+    "noVariant": "Product variant not available",
+    "buyNow": "Buy Now",
+    "loading": "Loading...",
+    "notAvailable": "Not available"
   }
 }
