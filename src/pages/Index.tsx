@@ -6,7 +6,6 @@ import { DetectionTable } from "@/components/DetectionTable";
 import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
 import { SupportChat } from "@/components/SupportChat";
 import { LanguageSelector } from "@/components/LanguageSelector";
-import { CartDrawer } from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -138,8 +137,7 @@ const Index = () => {
       <div className="relative bg-gradient-primary text-primary-foreground py-20 shadow-crop">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex justify-end gap-2 mb-4">
-            <CartDrawer />
+          <div className="flex justify-end mb-4">
             <LanguageSelector />
           </div>
           <div className="text-center">

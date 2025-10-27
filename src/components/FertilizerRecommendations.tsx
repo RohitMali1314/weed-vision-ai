@@ -2,12 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import { useCartStore } from "@/stores/cartStore";
-import { getProducts, ShopifyProduct } from "@/lib/shopify";
-import { useEffect, useState } from "react";
 
 export interface FertilizerData {
   name: string;
@@ -53,60 +49,31 @@ const convertToIndianUnits = (quantity: string): string => {
   });
 };
 
+// Estimated prices in INR for common fertilizers
+const getFertilizerPrice = (name: string): string => {
+  const normalized = name.toLowerCase();
+  
+  // Common herbicides and their approximate prices per liter/kg in INR
+  if (normalized.includes('glyphosate')) return '₹800-1200/L';
+  if (normalized.includes('2,4-d')) return '₹600-900/L';
+  if (normalized.includes('atrazine')) return '₹700-1000/L';
+  if (normalized.includes('pendimethalin')) return '₹500-800/L';
+  if (normalized.includes('metribuzin')) return '₹1000-1500/kg';
+  if (normalized.includes('paraquat')) return '₹900-1200/L';
+  if (normalized.includes('dicamba')) return '₹800-1100/L';
+  
+  // Default price range
+  return '₹600-1200';
+};
+
+const getSearchUrl = (fertilizerName: string): string => {
+  // Create search URLs for Indian e-commerce platforms
+  const searchTerm = encodeURIComponent(`${fertilizerName} herbicide fertilizer`);
+  return `https://www.google.com/search?q=${searchTerm}+buy+india+price`;
+};
+
 export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendationsProps) => {
   const { t } = useTranslation();
-  const addItem = useCartStore(state => state.addItem);
-  const [shopifyProducts, setShopifyProducts] = useState<ShopifyProduct[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(true);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const products = await getProducts(50);
-        setShopifyProducts(products);
-      } catch (error) {
-        console.error('Failed to load products:', error);
-      } finally {
-        setLoadingProducts(false);
-      }
-    };
-    loadProducts();
-  }, []);
-
-  const findMatchingProduct = (fertilizerName: string) => {
-    const normalized = fertilizerName.toLowerCase().trim();
-    return shopifyProducts.find(product => 
-      product.node.title.toLowerCase().includes(normalized) ||
-      normalized.includes(product.node.title.toLowerCase())
-    );
-  };
-
-  const handleAddToCart = (fertilizer: FertilizerData) => {
-    const matchingProduct = findMatchingProduct(fertilizer.name);
-    
-    if (!matchingProduct) {
-      toast.error(t('cart.productNotFound'));
-      return;
-    }
-
-    const variant = matchingProduct.node.variants.edges[0]?.node;
-    if (!variant) {
-      toast.error(t('cart.noVariant'));
-      return;
-    }
-
-    const cartItem = {
-      product: matchingProduct,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions || []
-    };
-    
-    addItem(cartItem);
-    toast.success(t('cart.added'));
-  };
 
   if (!fertilizers || fertilizers.length === 0) {
     return null;
@@ -134,8 +101,9 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                 <TableHead>Fertilizer Name</TableHead>
                 <TableHead>Quantity</TableHead>
                 <TableHead>Application Frequency</TableHead>
+                <TableHead>Est. Price (INR)</TableHead>
                 {fertilizers.some(f => f.type) && <TableHead>Type</TableHead>}
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Buy Online</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -161,6 +129,11 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                     <span className="text-sm">{normalizeText(fertilizer.frequency)}</span>
                   </div>
                 </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className="bg-accent/10 border-accent font-semibold">
+                    {getFertilizerPrice(fertilizer.name)}
+                  </Badge>
+                </TableCell>
                   {fertilizers.some(f => f.type) && (
                     <TableCell>
                       {fertilizer.type && (
@@ -171,24 +144,15 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                     </TableCell>
                   )}
                   <TableCell className="text-right">
-                    {loadingProducts ? (
-                      <Button size="sm" disabled>
-                        {t('cart.loading')}
-                      </Button>
-                    ) : findMatchingProduct(fertilizer.name) ? (
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleAddToCart(fertilizer)}
-                        className="gap-2"
-                      >
-                        <ShoppingCart className="h-4 w-4" />
-                        {t('cart.buyNow')}
-                      </Button>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">
-                        {t('cart.notAvailable')}
-                      </span>
-                    )}
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => window.open(getSearchUrl(fertilizer.name), '_blank')}
+                      className="gap-2"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      {t('fertilizer.findOnline')}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

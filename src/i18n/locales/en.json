@@ -44,7 +44,8 @@
     "name": "Fertilizer Name",
     "quantity": "Quantity",
     "frequency": "Application Frequency",
-    "forWeed": "For Weed Type"
+    "forWeed": "For Weed Type",
+    "findOnline": "Find Online"
   },
   "toast": {
     "noImage": "No image selected",
