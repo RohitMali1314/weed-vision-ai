@@ -124,13 +124,24 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-field relative overflow-hidden">
-      {/* Agricultural pattern overlay */}
+    <div className="min-h-screen bg-gradient-field relative overflow-hidden farm-texture">
+      {/* Agricultural pattern overlay with animated elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E")`,
-          backgroundSize: '40px 40px'
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M30 10c-2 0-4 1-5 3l-5 10c-1 2-1 4 0 6l5 10c1 2 3 3 5 3s4-1 5-3l5-10c1-2 1-4 0-6l-5-10c-1-2-3-3-5-3z'/%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '60px 60px'
         }} />
+      </div>
+      
+      {/* Floating decorative farm elements */}
+      <div className="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
+        <span className="text-6xl">🌾</span>
+      </div>
+      <div className="absolute top-40 right-20 w-16 h-16 opacity-10 animate-float" style={{ animationDelay: '1s' }}>
+        <span className="text-6xl">🚜</span>
+      </div>
+      <div className="absolute bottom-40 left-1/4 w-16 h-16 opacity-10 animate-float" style={{ animationDelay: '2s' }}>
+        <span className="text-6xl">🌻</span>
       </div>
 
       {/* Hero Section with farm-inspired design */}
@@ -181,8 +192,8 @@ const Index = () => {
       <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Upload Section with agricultural styling */}
-          <div className="space-y-8">
-            <Card className="shadow-crop border-2 border-primary/20 bg-card/80 backdrop-blur-sm">
+          <div className="space-y-8 animate-slide-up">
+            <Card className="shadow-crop border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:shadow-strong transition-shadow duration-300">
               <CardHeader className="bg-gradient-earth/10 border-b border-soil/20">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -246,7 +257,7 @@ const Index = () => {
             {/* Detection Results Table with farm theme */}
             {results && (
               <>
-                <Card className="shadow-crop border-2 border-accent/30 bg-card/90 backdrop-blur-sm">
+                <Card className="shadow-crop border-2 border-accent/30 bg-card/90 backdrop-blur-sm hover:shadow-strong transition-all duration-300 animate-grow">
                   <CardHeader className="bg-gradient-to-r from-accent/10 to-crop/10 border-b border-accent/20">
                     <CardTitle className="flex items-center gap-3 text-xl">
                       <div className="p-2 bg-accent/20 rounded-lg">
@@ -272,7 +283,7 @@ const Index = () => {
           </div>
 
           {/* Results Section with agricultural design */}
-          <div className="space-y-8">
+          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             {results ? (
               <ResultsDisplay results={results} />
             ) : (
