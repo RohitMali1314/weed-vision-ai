@@ -76,5 +76,18 @@
     "buyNow": "Buy Now",
     "loading": "Loading...",
     "notAvailable": "Not available"
+  },
+  "chat": {
+    "title": "AI Support Assistant",
+    "placeholder": "Type your question...",
+    "preQuestionsTitle": "Quick questions to get started:",
+    "preQuestion1": "How do I upload a field image?",
+    "preQuestion2": "What do the confidence scores mean?",
+    "preQuestion3": "How should I use the fertilizer recommendations?",
+    "preQuestion4": "What image quality works best?"
+  },
+  "footer": {
+    "developedBy": "Developed By",
+    "tagline": "🌾 Empowering farmers with AI-powered precision agriculture"
   }
 }

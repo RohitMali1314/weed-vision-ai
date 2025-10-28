@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages } = await req.json();
+    const { messages, language = 'en' } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -29,7 +29,7 @@ serve(async (req) => {
         messages: [
           { 
             role: "system", 
-            content: `You are a helpful support assistant for a Weed Detection AI application. 
+            content: `You are a helpful support assistant for a Weed Detection AI application. ${language === 'hi' ? 'Respond in Hindi (हिंदी).' : language === 'mr' ? 'Respond in Marathi (मराठी).' : 'Respond in English.'}
             
 The app uses YOLOv11 deep learning technology to detect weeds in crop field images and provides:
 - Real-time weed detection with bounding boxes

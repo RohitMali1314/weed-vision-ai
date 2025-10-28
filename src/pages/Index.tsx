@@ -303,6 +303,31 @@ const Index = () => {
       </div>
       
       <SupportChat />
+      
+      {/* Team Credits Footer */}
+      <footer className="relative z-10 bg-gradient-earth/20 border-t-2 border-primary/20 mt-16">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
+              {t("footer.developedBy")}
+            </h3>
+            <div className="flex flex-wrap justify-center gap-4 text-muted-foreground">
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👨‍💻 Rohit Mali
+              </span>
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👩‍💻 Sakshi Padalkar
+              </span>
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👨‍💻 Shivam Narevekar
+              </span>
+            </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {t("footer.tagline")}
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

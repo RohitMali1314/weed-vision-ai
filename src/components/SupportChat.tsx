@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 interface Message {
   role: "user" | "assistant";
@@ -13,16 +14,20 @@ interface Message {
 
 export const SupportChat = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "👋 Hi! I'm your weed detection support assistant. How can I help you today?",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPreQuestions, setShowPreQuestions] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { t, i18n } = useTranslation();
+
+  const preQuestions = [
+    t("chat.preQuestion1"),
+    t("chat.preQuestion2"),
+    t("chat.preQuestion3"),
+    t("chat.preQuestion4")
+  ];
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -30,10 +35,18 @@ export const SupportChat = () => {
     }
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+  // Reset pre-questions when language changes and chat is empty
+  useEffect(() => {
+    if (messages.length === 0) {
+      setShowPreQuestions(true);
+    }
+  }, [i18n.language, messages.length]);
 
-    const userMessage: Message = { role: "user", content: input };
+  const handleSendMessage = async (messageText: string) => {
+    if (!messageText.trim() || isLoading) return;
+
+    setShowPreQuestions(false);
+    const userMessage: Message = { role: "user", content: messageText };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -47,7 +60,10 @@ export const SupportChat = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({ 
+          messages: [...messages, userMessage],
+          language: i18n.language 
+        }),
       });
 
       if (!response.ok || !response.body) {
@@ -161,7 +177,7 @@ export const SupportChat = () => {
       <div className="flex items-center justify-between p-4 border-b bg-gradient-primary text-primary-foreground">
         <div className="flex items-center gap-2">
           <MessageCircle className="h-5 w-5" />
-          <h3 className="font-semibold">Support Chat</h3>
+          <h3 className="font-semibold">{t("chat.title")}</h3>
         </div>
         <Button
           variant="ghost"
@@ -175,6 +191,24 @@ export const SupportChat = () => {
 
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>
         <div className="space-y-4">
+          {showPreQuestions && messages.length === 0 && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground text-center mb-4">
+                {t("chat.preQuestionsTitle")}
+              </p>
+              {preQuestions.map((question, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className="w-full text-left justify-start h-auto py-3 px-4 hover:bg-accent"
+                  onClick={() => handleSendMessage(question)}
+                  disabled={isLoading}
+                >
+                  <span className="text-sm">{question}</span>
+                </Button>
+              ))}
+            </div>
+          )}
           {messages.map((message, index) => (
             <div
               key={index}
@@ -205,14 +239,14 @@ export const SupportChat = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            sendMessage();
+            handleSendMessage(input);
           }}
           className="flex gap-2"
         >
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
+            placeholder={t("chat.placeholder")}
             disabled={isLoading}
             className="flex-1"
           />
