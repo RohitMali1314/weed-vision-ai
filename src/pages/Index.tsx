@@ -70,7 +70,9 @@ const Index = () => {
       formData.append('file', selectedImage);  // 👈 must match Flask's "file"
 
       // Call Flask backend /predict route
-      const response = await fetch('http://127.0.0.1:5000/predict', {
+      // Use environment variable or fallback to localhost for development
+      const apiUrl = import.meta.env.VITE_FLASK_API_URL || 'http://127.0.0.1:5000';
+      const response = await fetch(`${apiUrl}/predict`, {
         method: 'POST',
         body: formData,
       });
