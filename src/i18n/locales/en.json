@@ -20,7 +20,10 @@
     "analyzing": "Analyzing Crop Field...",
     "reset": "Reset",
     "capture": "Capture",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "orTryDemo": "Don't have an image? Try our demo!",
+    "tryDemo": "Try Demo Mode",
+    "exitDemo": "Exit Demo Mode"
   },
   "results": {
     "title": "Field Analysis Results",
@@ -58,7 +61,9 @@
     "invalidType": "Invalid file type",
     "imageOnly": "Please select an image file",
     "cameraError": "Camera access denied",
-    "allowCamera": "Please allow camera access to capture images"
+    "allowCamera": "Please allow camera access to capture images",
+    "demoMode": "Demo Mode Activated",
+    "demoDescription": "Showing sample weed detection results for demonstration"
   },
   "cart": {
     "title": "Shopping Cart",
