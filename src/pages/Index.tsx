@@ -39,12 +39,42 @@ const Index = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [results, setResults] = useState<PredictionResult | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  // Demo data for testing UI without backend
+  const demoData: PredictionResult = {
+    detections: [
+      { label: "Cyperus rotundus", confidence: 94.5, fertilizer: "Glyphosate", quantity: "2-3 L/ha", frequency: "Once per season" },
+      { label: "Amaranthus viridis", confidence: 89.2, fertilizer: "2,4-D Amine", quantity: "1-1.5 L/ha", frequency: "Twice per season" },
+      { label: "Cynodon dactylon", confidence: 87.8, fertilizer: "Paraquat", quantity: "2-2.5 L/ha", frequency: "As needed" },
+      { label: "Echinochloa colona", confidence: 82.1, fertilizer: "Pendimethalin", quantity: "3-3.5 L/ha", frequency: "Pre-emergence" },
+    ],
+    result_image_url: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&h=600&fit=crop",
+    original_image_url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
+    fertilizers: [
+      { name: "Glyphosate", quantity: "2-3 L/ha", frequency: "Once per season", type: "Cyperus rotundus" },
+      { name: "2,4-D Amine", quantity: "1-1.5 L/ha", frequency: "Twice per season", type: "Amaranthus viridis" },
+      { name: "Paraquat", quantity: "2-2.5 L/ha", frequency: "As needed", type: "Cynodon dactylon" },
+      { name: "Pendimethalin", quantity: "3-3.5 L/ha", frequency: "Pre-emergence", type: "Echinochloa colona" },
+    ]
+  };
+
+  const handleDemoMode = () => {
+    setIsDemoMode(true);
+    setImagePreview(demoData.original_image_url);
+    setResults(demoData);
+    toast({
+      title: t("toast.demoMode"),
+      description: t("toast.demoDescription"),
+    });
+  };
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
     setResults(null);
+    setIsDemoMode(false);
     
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -123,6 +153,7 @@ const Index = () => {
     setSelectedImage(null);
     setImagePreview(null);
     setResults(null);
+    setIsDemoMode(false);
   };
 
   return (
@@ -210,6 +241,20 @@ const Index = () => {
               <CardContent className="space-y-6 p-8">
                 <ImageUpload onImageSelect={handleImageSelect} />
                 
+                {/* Demo Mode Button */}
+                {!imagePreview && !results && (
+                  <div className="text-center pt-4 border-t border-border">
+                    <p className="text-sm text-muted-foreground mb-3">{t("upload.orTryDemo")}</p>
+                    <Button
+                      variant="outline"
+                      onClick={handleDemoMode}
+                      className="border-2 border-accent/50 hover:bg-accent/10 text-accent-foreground"
+                    >
+                      🎮 {t("upload.tryDemo")}
+                    </Button>
+                  </div>
+                )}
+                
                 {imagePreview && (
                   <div className="space-y-6">
                     <div className="relative group">
@@ -220,37 +265,50 @@ const Index = () => {
                         className="relative w-full h-72 object-cover rounded-xl border-2 border-primary/30 shadow-medium"
                       />
                       <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-                        📸 {t("upload.ready")}
+                        {isDemoMode ? "🎮 Demo Mode" : `📸 ${t("upload.ready")}`}
                       </div>
                     </div>
                     
-                    <div className="flex gap-3">
-                      <Button
-                        onClick={handleProcessImage}
-                        disabled={isProcessing}
-                        className="flex-1 h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-crop"
-                        size="lg"
-                      >
-                        {isProcessing ? (
-                          <>
-                            <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                            🔍 {t("upload.analyzing")}
-                          </>
-                        ) : (
-                          <>
-                            🧠 {t("upload.analyze")}
-                          </>
-                        )}
-                      </Button>
+                    {!isDemoMode && (
+                      <div className="flex gap-3">
+                        <Button
+                          onClick={handleProcessImage}
+                          disabled={isProcessing}
+                          className="flex-1 h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-crop"
+                          size="lg"
+                        >
+                          {isProcessing ? (
+                            <>
+                              <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                              🔍 {t("upload.analyzing")}
+                            </>
+                          ) : (
+                            <>
+                              🧠 {t("upload.analyze")}
+                            </>
+                          )}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={handleReset}
+                          className="px-8 h-12 border-2 border-primary/30 hover:bg-primary/10"
+                          size="lg"
+                        >
+                          🔄 {t("upload.reset")}
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {isDemoMode && (
                       <Button 
                         variant="outline" 
                         onClick={handleReset}
-                        className="px-8 h-12 border-2 border-primary/30 hover:bg-primary/10"
+                        className="w-full h-12 border-2 border-primary/30 hover:bg-primary/10"
                         size="lg"
                       >
-                        🔄 {t("upload.reset")}
+                        🔄 {t("upload.exitDemo")}
                       </Button>
-                    </div>
+                    )}
                   </div>
                 )}
               </CardContent>
