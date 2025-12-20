@@ -65,25 +65,22 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Tech-themed colors
-        info: {
-          DEFAULT: "hsl(var(--info))",
-          foreground: "hsl(var(--info-foreground))",
-        },
+        // Agriculture-themed colors
+        soil: "hsl(var(--soil))",
+        wheat: "hsl(var(--wheat))",
+        crop: "hsl(var(--crop))",
       },
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-secondary": "var(--gradient-secondary)",
-        "gradient-hero": "var(--gradient-hero)",
-        "gradient-glow": "var(--gradient-glow)",
-        "gradient-mesh": "var(--gradient-mesh)",
+        "gradient-field": "var(--gradient-field)",
+        "gradient-earth": "var(--gradient-earth)",
       },
       boxShadow: {
         "soft": "var(--shadow-soft)",
         "medium": "var(--shadow-medium)",
         "strong": "var(--shadow-strong)",
-        "glow": "var(--shadow-glow)",
-        "neon": "var(--shadow-neon)",
+        "crop": "var(--shadow-crop)",
       },
       borderRadius: {
         lg: "var(--radius)",
