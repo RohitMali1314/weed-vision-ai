@@ -1,14 +1,31 @@
 {
   "hero": {
-    "title": "Weed Detection",
-    "subtitle": "using Deep Learning",
-    "description": "Advanced AI-powered precision agriculture • Protect your crops with YOLOv11 technology",
-    "realtime": "Real-time Detection",
-    "accuracy": "High Accuracy",
-    "farmReady": "Farm-Ready"
+    "badge": "AI-Powered Agriculture",
+    "title": "Smart Weed Detection",
+    "subtitle": "Powered by Deep Learning",
+    "description": "Harness the power of YOLOv11 AI to instantly identify weeds in your crops and get precision fertilizer recommendations for maximum yield.",
+    "getStarted": "Get Started",
+    "watchDemo": "Watch Demo"
+  },
+  "stats": {
+    "accuracy": "Accuracy",
+    "species": "Weed Species",
+    "detection": "Detection Time"
+  },
+  "features": {
+    "title": "Cutting-Edge Technology",
+    "subtitle": "Built with state-of-the-art computer vision and deep learning models",
+    "detection": "Real-Time Detection",
+    "detectionDesc": "Instant weed identification using advanced YOLOv11 neural networks",
+    "ai": "AI Intelligence",
+    "aiDesc": "Smart recommendations powered by machine learning algorithms",
+    "precision": "High Precision",
+    "precisionDesc": "95%+ accuracy in identifying over 50 weed species",
+    "protection": "Crop Protection",
+    "protectionDesc": "Targeted treatment plans to maximize your harvest yield"
   },
   "upload": {
-    "title": "Field Image Upload",
+    "title": "Upload Field Image",
     "description": "Upload a crop field image or capture directly from your device camera",
     "dropzone": "Drop your image here",
     "browse": "or click to browse files",
@@ -16,22 +33,25 @@
     "chooseFile": "Choose File",
     "useCamera": "Use Camera",
     "ready": "Ready for Analysis",
-    "analyze": "Analyze Field Image",
-    "analyzing": "Analyzing Crop Field...",
+    "analyze": "Analyze Image",
+    "analyzing": "Analyzing...",
     "reset": "Reset",
     "capture": "Capture",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "orTryDemo": "No image? Try our interactive demo",
+    "tryDemo": "Try Demo Mode",
+    "exitDemo": "Exit Demo"
   },
   "results": {
-    "title": "Field Analysis Results",
+    "title": "Detection Results",
     "detected": "Detected",
-    "instances": "weed instances in your crop field",
-    "readyTitle": "Ready for Field Analysis",
-    "readyDescription": "Upload your crop field image to detect weeds and protect your harvest with AI precision",
+    "instances": "weed instances",
+    "readyTitle": "Ready for Analysis",
+    "readyDescription": "Upload your crop field image to detect weeds and get AI-powered treatment recommendations",
     "cropProtection": "Crop Protection",
-    "precisionDetection": "Precision Detection",
-    "originalImage": "Original Field Image",
-    "detectionResults": "Weed Detection Results"
+    "precisionDetection": "AI Detection",
+    "originalImage": "Original Image",
+    "detectionResults": "Detection Results"
   },
   "detection": {
     "weedType": "Weed Type",
@@ -58,7 +78,9 @@
     "invalidType": "Invalid file type",
     "imageOnly": "Please select an image file",
     "cameraError": "Camera access denied",
-    "allowCamera": "Please allow camera access to capture images"
+    "allowCamera": "Please allow camera access to capture images",
+    "demoMode": "Demo Mode Activated",
+    "demoDescription": "Showing sample weed detection results for demonstration"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -88,6 +110,6 @@
   },
   "footer": {
     "developedBy": "Developed By",
-    "tagline": "🌾 Empowering farmers with AI-powered precision agriculture"
+    "tagline": "Empowering farmers with AI-powered precision agriculture"
   }
 }
