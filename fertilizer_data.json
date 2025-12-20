@@ -1,0 +1,127 @@
+{
+  "Abutilon theophrasti": {
+    "fertilizer": "2,4-D Amine Salt",
+    "quantity": "500 ml per acre",
+    "frequency": "Spray once after weed emergence"
+  },
+  "Cotton": {
+    "fertilizer": "Urea (46% N)",
+    "quantity": "60 kg per acre",
+    "frequency": "Split into 2 to 3 doses during crop cycle"
+  },
+  "Digitaria sanguinalis": {
+    "fertilizer": "Atrazine 50% WP",
+    "quantity": "0.5 to 1.0 kg per acre",
+    "frequency": "Apply pre-emergence, once"
+  },
+  "Field bindweed": {
+    "fertilizer": "Glyphosate 41% SL",
+    "quantity": "1.5 liters per acre",
+    "frequency": "Apply once every 30 days until controlled"
+  },
+  "Lambsquarters": {
+    "fertilizer": "Metribuzin 70% WP",
+    "quantity": "200 to 300 g per acre",
+    "frequency": "Spray once post-emergence"
+  },
+  "Xanthium strumarium": {
+    "fertilizer": "Atrazine 50% WP",
+    "quantity": "0.5 kg per acre",
+    "frequency": "Apply pre-emergence, once"
+  },
+  "unknown weed": {
+    "fertilizer": "General Glyphosate 41% SL",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once as a broad-spectrum spray"
+  },
+  "Crabgrass": {
+    "fertilizer": "Pendimethalin 30% EC",
+    "quantity": "1 liter per acre",
+    "frequency": "Pre-emergence, once"
+  },
+  "Eclipta": {
+    "fertilizer": "Butachlor 50% EC",
+    "quantity": "1.25 liters per acre",
+    "frequency": "Apply within 3 days of sowing"
+  },
+  "Goosegrass": {
+    "fertilizer": "Oxadiazon 25% EC",
+    "quantity": "500 ml per acre",
+    "frequency": "Apply once post-emergence"
+  },
+  "Morningglory": {
+    "fertilizer": "2,4-D Amine Salt",
+    "quantity": "0.5 to 0.7 liters per acre",
+    "frequency": "Apply once after emergence"
+  },
+  "Nutsedge": {
+    "fertilizer": "Halosulfuron",
+    "quantity": "67 g per acre",
+    "frequency": "Apply once, repeat after 30 days if regrowth occurs"
+  },
+  "PalmerAmaranth": {
+    "fertilizer": "Metolachlor + Atrazine",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once early post-emergence"
+  },
+  "Prickly Sida": {
+    "fertilizer": "Imazethapyr",
+    "quantity": "500 ml per acre",
+    "frequency": "Apply once post-emergence"
+  },
+  "Ragweed": {
+    "fertilizer": "Glyphosate 41% SL",
+    "quantity": "1.2 liters per acre",
+    "frequency": "Apply twice, 20 days apart"
+  },
+  "Sicklepod": {
+    "fertilizer": "Imazethapyr",
+    "quantity": "400 to 500 ml per acre",
+    "frequency": "Apply once post-emergence"
+  },
+  "Spottedspurge": {
+    "fertilizer": "Atrazine 50% WP",
+    "quantity": "0.4 to .6 kg per acre",
+    "frequency": "Apply once after weed emergence"
+  },
+  "Spottedsqurge": {
+    "fertilizer": "Atrazine 50% WP",
+    "quantity": "0.4 to 0.6 kg per acre",
+    "frequency": "Apply once after weed emergence"
+  },
+  "SqurredAnoda": {
+    "fertilizer": "Metolachlor",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once pre-emergence"
+  },
+  "Swinecress": {
+    "fertilizer": "2,4-D Amine Salt",
+    "quantity": "0.5 liters per acre",
+    "frequency": "Apply once after weed emergence"
+  },
+  "Waterhemp": {
+    "fertilizer": "Acetochlor 50% EC",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once early post-emergence"
+  },
+  "p": {
+    "fertilizer": "General Glyphosate 41% SL",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once"
+  },
+  "purslane": {
+    "fertilizer": "Paraquat dichloride 24% SL",
+    "quantity": "500 ml per acre",
+    "frequency": "Spray once post-emergence"
+  },
+  "cotton": {
+    "fertilizer": "NPK (12:32:16)",
+    "quantity": "100 kg per acre",
+    "frequency": "Apply in 2 splits during crop growth"
+  },
+  "weed": {
+    "fertilizer": "General Glyphosate 41% SL",
+    "quantity": "1 liter per acre",
+    "frequency": "Apply once as a broad-spectrum spray"
+  }
+}
