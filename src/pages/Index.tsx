@@ -100,11 +100,16 @@ const Index = () => {
     
     try {
       const formData = new FormData();
-      formData.append('file', selectedImage);
+      formData.append("file", selectedImage);
 
-      const apiUrl = import.meta.env.VITE_FLASK_API_URL || 'http://127.0.0.1:5000';
+      // Vite env vars are injected at build-time; keep a safe production fallback.
+      const rawApiUrl =
+        import.meta.env.VITE_FLASK_API_URL ||
+        "https://weed-detection-using-deeplearning-3.onrender.com";
+      const apiUrl = rawApiUrl.replace(/\/+$/, "");
+
       const response = await fetch(`${apiUrl}/predict`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
