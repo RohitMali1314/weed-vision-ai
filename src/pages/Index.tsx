@@ -100,7 +100,9 @@ const Index = () => {
     
     try {
       const formData = new FormData();
+      // Send both keys to support different Flask implementations.
       formData.append("file", selectedImage);
+      formData.append("image", selectedImage);
 
       // Vite env vars are injected at build-time; keep a safe production fallback.
       const rawApiUrl =
@@ -114,39 +116,43 @@ const Index = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to process image');
+        const errorText = await response.text().catch(() => "");
+        throw new Error(
+          `Backend error ${response.status}${errorText ? `: ${errorText.slice(0, 200)}` : ""}`
+        );
       }
 
       const result: PredictionResult = await response.json();
-      
+
       const uniqueFertilizers = Array.from(
         new Map(
           result.detections
-            .filter(d => d.fertilizer && d.quantity && d.frequency)
-            .map(d => [
+            .filter((d) => d.fertilizer && d.quantity && d.frequency)
+            .map((d) => [
               d.fertilizer,
               {
                 name: d.fertilizer!,
                 quantity: d.quantity!,
                 frequency: d.frequency!,
-                type: d.label
-              }
+                type: d.label,
+              },
             ])
         ).values()
       );
-      
+
       result.fertilizers = uniqueFertilizers;
       setResults(result);
-      
+
       toast({
         title: t("toast.complete"),
         description: `${t("toast.found")} ${result.detections.length} ${t("toast.detections")}`,
       });
     } catch (error) {
-      console.error('Error processing image:', error);
+      console.error("Error processing image:", error);
+      const message = error instanceof Error ? error.message : t("toast.backendError");
       toast({
         title: t("toast.failed"),
-        description: t("toast.backendError"),
+        description: message,
         variant: "destructive",
       });
     } finally {
