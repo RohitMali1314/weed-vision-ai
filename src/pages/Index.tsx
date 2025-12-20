@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 
 export interface Detection {
@@ -104,25 +105,16 @@ const Index = () => {
       formData.append("file", selectedImage);
       formData.append("image", selectedImage);
 
-      // Vite env vars are injected at build-time; keep a safe production fallback.
-      const rawApiUrl =
-        import.meta.env.VITE_FLASK_API_URL ||
-        "https://weed-vision-ai.onrender.com";
-      const apiUrl = rawApiUrl.replace(/\/+$/, "");
-
-      const response = await fetch(`${apiUrl}/predict`, {
-        method: "POST",
+      // Use backend function proxy to avoid CORS/network issues from the browser.
+      const { data, error } = await supabase.functions.invoke("predict-proxy", {
         body: formData,
       });
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => "");
-        throw new Error(
-          `Backend error ${response.status}${errorText ? `: ${errorText.slice(0, 200)}` : ""}`
-        );
+      if (error) {
+        throw new Error(`Backend error ${error.status || ""}: ${error.message}`.trim());
       }
 
-      const result: PredictionResult = await response.json();
+      const result = data as PredictionResult;
 
       const uniqueFertilizers = Array.from(
         new Map(
