@@ -122,29 +122,25 @@ const Index = () => {
     setIsProcessing(true);
     
     try {
-      const formData = new FormData();
-      formData.append("file", selectedImage);
-      formData.append("image", selectedImage);
-
-      // Use direct fetch to edge function since supabase.functions.invoke doesn't handle FormData properly
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-      
-      const response = await fetch(`${supabaseUrl}/functions/v1/predict-proxy`, {
-        method: "POST",
-        headers: {
-          "apikey": supabaseKey,
-          "authorization": `Bearer ${supabaseKey}`,
-        },
-        body: formData,
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error("Failed to read image"));
+        reader.readAsDataURL(selectedImage);
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Backend error ${response.status}: ${errorText}`);
-      }
+      // Call backend function proxy (JSON body) to avoid CORS/network issues.
+      const { data, error } = await supabase.functions.invoke("predict-proxy", {
+        body: {
+          dataUrl,
+          filename: selectedImage.name,
+          mimeType: selectedImage.type,
+        },
+      });
 
-      const data = await response.json();
+      if (error) {
+        throw new Error(`Backend error ${error.status || ""}: ${error.message}`.trim());
+      }
 
       const result = data as PredictionResult;
 
