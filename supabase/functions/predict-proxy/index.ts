@@ -89,16 +89,33 @@ serve(async (req) => {
       body: formData,
     });
 
-    const upstreamContentType = upstream.headers.get("content-type") || "application/json";
+    const upstreamContentType = upstream.headers.get("content-type") || "";
     const upstreamText = await upstream.text();
 
     console.log("predict-proxy: upstream status:", upstream.status);
-    console.log("predict-proxy: upstream content-type:", upstreamContentType);
+    console.log("predict-proxy: upstream content-type:", upstreamContentType || "(none)");
     console.log("predict-proxy: upstream body preview:", upstreamText.slice(0, 200));
+
+    // If backend returns non-JSON (often HTML error pages), wrap it into JSON so the client can parse it.
+    const looksJson = upstreamContentType.toLowerCase().includes("application/json");
+    if (!upstream.ok || !looksJson) {
+      return new Response(
+        JSON.stringify({
+          error: "Upstream backend error",
+          upstream_status: upstream.status,
+          upstream_content_type: upstreamContentType || null,
+          upstream_body_preview: upstreamText.slice(0, 500),
+        }),
+        {
+          status: upstream.status || 502,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
 
     return new Response(upstreamText, {
       status: upstream.status,
-      headers: { ...corsHeaders, "Content-Type": upstreamContentType },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
     console.error("predict-proxy error:", e);
