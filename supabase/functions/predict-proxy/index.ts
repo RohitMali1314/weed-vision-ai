@@ -5,68 +5,111 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+type JsonBody = {
+  filename?: string;
+  mimeType?: string;
+  base64?: string; // raw base64 (no data: prefix)
+  dataUrl?: string; // full data URL
+};
+
+function dataUrlToParts(dataUrl: string): { mimeType: string; base64: string } {
+  const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) throw new Error("Invalid dataUrl format");
+  return { mimeType: match[1], base64: match[2] };
+}
+
+function base64ToUint8Array(base64: string): Uint8Array {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const backendUrl = (Deno.env.get("FLASK_BACKEND_URL") || "https://weed-vision-ai.onrender.com").replace(/\/+$/, "");
-    console.log("Backend URL:", backendUrl);
-
     const contentType = req.headers.get("content-type") || "";
-    console.log("Request content-type:", contentType);
+
+    console.log("predict-proxy: incoming content-type:", contentType);
+    console.log("predict-proxy: backendUrl:", backendUrl);
 
     let file: File | null = null;
 
     if (contentType.includes("multipart/form-data")) {
       const incoming = await req.formData();
-      file = (incoming.get("file") ?? incoming.get("image")) as File | null;
+      const f = incoming.get("file") ?? incoming.get("image");
+      file = f instanceof File ? f : null;
     } else {
-      // Handle case where body might be sent differently
-      const incoming = await req.formData();
-      file = (incoming.get("file") ?? incoming.get("image")) as File | null;
+      // JSON path (recommended for supabase.functions.invoke)
+      const body = (await req.json()) as JsonBody;
+      const filename = body.filename || "upload.jpg";
+
+      let mimeType = body.mimeType || "application/octet-stream";
+      let base64 = body.base64;
+
+      if (!base64 && body.dataUrl) {
+        const parts = dataUrlToParts(body.dataUrl);
+        mimeType = parts.mimeType;
+        base64 = parts.base64;
+      }
+
+      if (!base64) {
+        return new Response(JSON.stringify({ error: "Missing image data (expected base64 or dataUrl)." }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const bytes = base64ToUint8Array(base64);
+      // Create a real ArrayBuffer copy (avoids SharedArrayBuffer typing issues).
+      const arrayBuffer = new ArrayBuffer(bytes.byteLength);
+      new Uint8Array(arrayBuffer).set(bytes);
+      const blob = new Blob([arrayBuffer], { type: mimeType });
+      file = new File([blob], filename, { type: mimeType });
     }
 
-    if (!file) {
-      console.error("No file found in request");
+    if (!(file instanceof File)) {
       return new Response(JSON.stringify({ error: "Missing image file (expected field 'file' or 'image')." }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    console.log("File received:", file.name, "Size:", file.size, "Type:", file.type);
+    console.log("predict-proxy: received file:", file.name, file.size, file.type);
 
+    // Forward to Flask; include BOTH keys to match different backends.
     const formData = new FormData();
     formData.append("file", file, file.name);
+    formData.append("image", file, file.name);
 
-    console.log("Sending request to Flask backend...");
-    
     const upstream = await fetch(`${backendUrl}/predict`, {
       method: "POST",
       body: formData,
     });
 
-    console.log("Flask response status:", upstream.status);
-    
-    const responseContentType = upstream.headers.get("content-type") || "application/json";
-    const body = await upstream.text();
-    
-    console.log("Flask response body preview:", body.substring(0, 200));
+    const upstreamContentType = upstream.headers.get("content-type") || "application/json";
+    const upstreamText = await upstream.text();
 
-    return new Response(body, {
+    console.log("predict-proxy: upstream status:", upstream.status);
+    console.log("predict-proxy: upstream content-type:", upstreamContentType);
+    console.log("predict-proxy: upstream body preview:", upstreamText.slice(0, 200));
+
+    return new Response(upstreamText, {
       status: upstream.status,
-      headers: { ...corsHeaders, "Content-Type": responseContentType },
+      headers: { ...corsHeaders, "Content-Type": upstreamContentType },
     });
   } catch (e) {
     console.error("predict-proxy error:", e);
-    return new Response(JSON.stringify({ 
-      error: e instanceof Error ? e.message : "Unknown error",
-      details: e instanceof Error ? e.stack : undefined
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        error: e instanceof Error ? e.message : "Unknown error",
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
   }
 });
