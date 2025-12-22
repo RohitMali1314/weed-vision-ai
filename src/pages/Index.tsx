@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, Upload, Loader2, Scan, Sparkles, Zap, Target, Shield, Leaf, ArrowRight, Play } from "lucide-react";
+import { Upload, Loader2, Scan, Sparkles, Zap, Target, Shield, Leaf, ArrowRight, Play, Camera } from "lucide-react";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
@@ -8,6 +8,7 @@ import { SupportChat } from "@/components/SupportChat";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { FeatureCard } from "@/components/FeatureCard";
 import { StatCard } from "@/components/StatCard";
+import { BackendStatusBadge } from "@/components/BackendStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -44,30 +45,9 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [results, setResults] = useState<PredictionResult | null>(null);
   const [isDemoMode, setIsDemoMode] = useState(false);
-  const [backendStatus, setBackendStatus] = useState<'unknown' | 'waking' | 'online' | 'offline'>('unknown');
+  const [backendOnline, setBackendOnline] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
-
-  const wakeUpBackend = async () => {
-    setBackendStatus('waking');
-    try {
-      const backendUrl = "https://weed-vision-ai.onrender.com";
-      const response = await fetch(backendUrl, { method: 'GET', mode: 'no-cors' });
-      // no-cors doesn't give us status, but if it doesn't throw, server is responding
-      setBackendStatus('online');
-      toast({
-        title: t("toast.serverReady") || "Server Ready",
-        description: t("toast.serverReadyDesc") || "Backend is now awake and ready for analysis.",
-      });
-    } catch (error) {
-      setBackendStatus('offline');
-      toast({
-        title: t("toast.serverError") || "Server Unreachable",
-        description: t("toast.serverErrorDesc") || "Could not reach the backend. It may still be starting.",
-        variant: "destructive",
-      });
-    }
-  };
 
   // Demo data for testing UI without backend
   const demoData: PredictionResult = {
@@ -215,6 +195,7 @@ const Index = () => {
               <span className="text-xl font-bold text-gradient">AgriVision AI</span>
             </div>
             <div className="flex items-center gap-4">
+              <BackendStatusBadge onStatusChange={(s) => setBackendOnline(s === "online")} />
               <Badge variant="outline" className="border-primary/50 text-primary hidden sm:flex">
                 <Zap className="w-3 h-3 mr-1" /> YOLOv11 Powered
               </Badge>
@@ -261,36 +242,12 @@ const Index = () => {
               </Button>
             </div>
 
-            {/* Wake Up Server Button */}
-            <div className="flex flex-col items-center gap-2 mb-16">
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={wakeUpBackend}
-                disabled={backendStatus === 'waking'}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {backendStatus === 'waking' ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {t("hero.wakingServer") || "Waking up server..."}
-                  </>
-                ) : backendStatus === 'online' ? (
-                  <>
-                    <Zap className="w-4 h-4 mr-2 text-primary" />
-                    {t("hero.serverOnline") || "Server Online"}
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4 mr-2" />
-                    {t("hero.wakeServer") || "Wake Up Server"}
-                  </>
-                )}
-              </Button>
-              <p className="text-xs text-muted-foreground max-w-md text-center">
-                {t("hero.wakeServerHint") || "Free servers sleep after inactivity. Click to wake it up before uploading."}
+            {/* Backend status hint */}
+            {!backendOnline && (
+              <p className="text-sm text-muted-foreground mb-8">
+                {t("hero.serverHint") || "Backend is starting. Click the status badge to refresh."}
               </p>
-            </div>
+            )}
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
