@@ -44,8 +44,30 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [results, setResults] = useState<PredictionResult | null>(null);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [backendStatus, setBackendStatus] = useState<'unknown' | 'waking' | 'online' | 'offline'>('unknown');
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  const wakeUpBackend = async () => {
+    setBackendStatus('waking');
+    try {
+      const backendUrl = "https://weed-vision-ai.onrender.com";
+      const response = await fetch(backendUrl, { method: 'GET', mode: 'no-cors' });
+      // no-cors doesn't give us status, but if it doesn't throw, server is responding
+      setBackendStatus('online');
+      toast({
+        title: t("toast.serverReady") || "Server Ready",
+        description: t("toast.serverReadyDesc") || "Backend is now awake and ready for analysis.",
+      });
+    } catch (error) {
+      setBackendStatus('offline');
+      toast({
+        title: t("toast.serverError") || "Server Unreachable",
+        description: t("toast.serverErrorDesc") || "Could not reach the backend. It may still be starting.",
+        variant: "destructive",
+      });
+    }
+  };
 
   // Demo data for testing UI without backend
   const demoData: PredictionResult = {
@@ -215,7 +237,7 @@ const Index = () => {
               {t("hero.description")}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button 
                 size="lg" 
                 className="bg-gradient-primary hover:opacity-90 text-background font-semibold px-8 glow-primary transition-all"
@@ -231,6 +253,37 @@ const Index = () => {
               >
                 <Play className="mr-2 w-4 h-4" /> {t("hero.watchDemo")}
               </Button>
+            </div>
+
+            {/* Wake Up Server Button */}
+            <div className="flex flex-col items-center gap-2 mb-16">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={wakeUpBackend}
+                disabled={backendStatus === 'waking'}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                {backendStatus === 'waking' ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    {t("hero.wakingServer") || "Waking up server..."}
+                  </>
+                ) : backendStatus === 'online' ? (
+                  <>
+                    <Zap className="w-4 h-4 mr-2 text-primary" />
+                    {t("hero.serverOnline") || "Server Online"}
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4 mr-2" />
+                    {t("hero.wakeServer") || "Wake Up Server"}
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground max-w-md text-center">
+                {t("hero.wakeServerHint") || "Free servers sleep after inactivity. Click to wake it up before uploading."}
+              </p>
             </div>
 
             {/* Stats */}
