@@ -123,18 +123,28 @@ const Index = () => {
     
     try {
       const formData = new FormData();
-      // Send both keys to support different Flask implementations.
       formData.append("file", selectedImage);
       formData.append("image", selectedImage);
 
-      // Use backend function proxy to avoid CORS/network issues from the browser.
-      const { data, error } = await supabase.functions.invoke("predict-proxy", {
+      // Use direct fetch to edge function since supabase.functions.invoke doesn't handle FormData properly
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/predict-proxy`, {
+        method: "POST",
+        headers: {
+          "apikey": supabaseKey,
+          "authorization": `Bearer ${supabaseKey}`,
+        },
         body: formData,
       });
 
-      if (error) {
-        throw new Error(`Backend error ${error.status || ""}: ${error.message}`.trim());
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Backend error ${response.status}: ${errorText}`);
       }
+
+      const data = await response.json();
 
       const result = data as PredictionResult;
 
