@@ -5,7 +5,11 @@
     "subtitle": "Powered by Deep Learning",
     "description": "Harness the power of YOLOv11 AI to instantly identify weeds in your crops and get precision fertilizer recommendations for maximum yield.",
     "getStarted": "Get Started",
-    "watchDemo": "Watch Demo"
+    "watchDemo": "Watch Demo",
+    "wakeServer": "Wake Up Server",
+    "wakingServer": "Waking up server...",
+    "serverOnline": "Server Online",
+    "wakeServerHint": "Free servers sleep after inactivity. Click to wake it up before uploading."
   },
   "stats": {
     "accuracy": "Accuracy",
@@ -80,7 +84,11 @@
     "cameraError": "Camera access denied",
     "allowCamera": "Please allow camera access to capture images",
     "demoMode": "Demo Mode Activated",
-    "demoDescription": "Showing sample weed detection results for demonstration"
+    "demoDescription": "Showing sample weed detection results for demonstration",
+    "serverReady": "Server Ready",
+    "serverReadyDesc": "Backend is now awake and ready for analysis.",
+    "serverError": "Server Unreachable",
+    "serverErrorDesc": "Could not reach the backend. It may still be starting."
   },
   "cart": {
     "title": "Shopping Cart",
