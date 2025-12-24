@@ -29,11 +29,15 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const backendUrl = (
+    let backendUrl = (
       Deno.env.get("VITE_FLASK_API_URL") ||
       Deno.env.get("FLASK_BACKEND_URL") ||
       "https://backend-w7g6.onrender.com"
     ).replace(/\/+$/, "");
+
+    // Allow secrets to be set as either base URL or full /predict URL.
+    backendUrl = backendUrl.replace(/\/predict\/?$/, "");
+
     const contentType = req.headers.get("content-type") || "";
 
     console.log("predict-proxy: incoming content-type:", contentType);
