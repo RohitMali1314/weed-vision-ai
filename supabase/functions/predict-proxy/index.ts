@@ -29,7 +29,11 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const backendUrl = (Deno.env.get("FLASK_BACKEND_URL") || "https://weed-vision-ai.onrender.com").replace(/\/+$/, "");
+    const backendUrl = (
+      Deno.env.get("VITE_FLASK_API_URL") ||
+      Deno.env.get("FLASK_BACKEND_URL") ||
+      "https://backend-w7g6.onrender.com"
+    ).replace(/\/+$/, "");
     const contentType = req.headers.get("content-type") || "";
 
     console.log("predict-proxy: incoming content-type:", contentType);
