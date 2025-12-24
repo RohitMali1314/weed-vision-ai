@@ -9,6 +9,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { FeatureCard } from "@/components/FeatureCard";
 import { StatCard } from "@/components/StatCard";
 import { BackendStatusBadge } from "@/components/BackendStatusBadge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -200,6 +201,7 @@ const Index = () => {
                 <Zap className="w-3 h-3 mr-1" /> YOLOv11 Powered
               </Badge>
               <LanguageSelector />
+              <ThemeToggle />
             </div>
           </div>
         </div>
