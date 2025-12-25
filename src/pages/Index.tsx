@@ -103,6 +103,35 @@ const Index = () => {
     setIsProcessing(true);
     
     try {
+      // If you're running locally, call your local Flask directly (no proxy).
+      // The hosted proxy can't reach 127.0.0.1.
+      const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+      if (isLocalhost) {
+        const formData = new FormData();
+        formData.append("file", selectedImage);
+        formData.append("image", selectedImage);
+
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(`Local backend error ${response.status}: ${text.slice(0, 200)}`);
+        }
+
+        const result: PredictionResult = await response.json();
+        setResults(result);
+
+        toast({
+          title: t("toast.complete"),
+          description: `${t("toast.found")} ${result.detections.length} ${t("toast.detections")}`,
+        });
+        return;
+      }
+
       const dataUrl = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(String(reader.result));
@@ -110,7 +139,7 @@ const Index = () => {
         reader.readAsDataURL(selectedImage);
       });
 
-      // Call backend function proxy (JSON body) to avoid CORS/network issues.
+      // Hosted mode: call backend function proxy (JSON body) to avoid CORS/network issues.
       const { data, error } = await supabase.functions.invoke("predict-proxy", {
         body: {
           dataUrl,
