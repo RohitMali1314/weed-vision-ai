@@ -30,8 +30,9 @@ serve(async (req) => {
 
   try {
     let backendUrl = (
-      Deno.env.get("VITE_FLASK_API_URL") ||
+      // Prefer non-VITE secret for server-side/edge usage
       Deno.env.get("FLASK_BACKEND_URL") ||
+      Deno.env.get("VITE_FLASK_API_URL") ||
       "https://backend-w7g6.onrender.com"
     ).replace(/\/+$/, "");
 
