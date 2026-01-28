@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Camera, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -14,41 +14,121 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const { toast } = useToast();
+  const [isCameraReady, setIsCameraReady] = useState(false);
+
+  // Cleanup camera when component unmounts or stream changes
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((t) => t.stop());
+      }
+    };
+  }, [stream]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[ImageUpload] handleFileSelect triggered', event.target.files);
     const file = event.target.files?.[0];
     if (file) {
+      console.log('[ImageUpload] File selected:', file.name, file.type, file.size);
       if (file.type.startsWith('image/')) {
+        console.log('[ImageUpload] Valid image, calling onImageSelect');
         onImageSelect(file);
+        // Reset file input so same file can be selected again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } else {
+        console.error('[ImageUpload] Invalid file type:', file.type);
         toast({
           title: "Invalid file type",
           description: "Please select an image file",
           variant: "destructive",
         });
       }
+    } else {
+      console.warn('[ImageUpload] No file selected');
     }
   };
 
   const openCamera = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-        audio: false,
+    // Stop any existing streams first
+    if (stream) {
+      stream.getTracks().forEach((t) => t.stop());
+      setStream(null);
+    }
+    setIsCameraReady(false);
+
+    // If running inside an iframe, many browsers block camera. Fallback to native capture.
+    if (window.self !== window.top) {
+      console.warn('[ImageUpload] Detected iframe context; falling back to file input capture.');
+      fileInputRef.current?.click();
+      return;
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      toast({
+        title: "Camera unsupported",
+        description: "Your browser doesn't support camera access.",
+        variant: "destructive",
       });
-      
+      return;
+    }
+
+    try {
+      let mediaStream: MediaStream;
+      try {
+        // Prefer back camera on mobile
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: 'environment' } },
+          audio: false,
+        });
+      } catch (err) {
+        // Fallback to any available camera
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+      }
+
       setStream(mediaStream);
       setIsCameraOpen(true);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
+
+      const video = videoRef.current;
+      if (video) {
+        video.srcObject = mediaStream;
+        // iOS Safari requirements
+        video.setAttribute('playsinline', 'true');
+        video.muted = true;
+
+        const markReady = (e?: Event) => {
+          console.log('[ImageUpload] video event', e?.type, 'readyState', video.readyState);
+          if (video.readyState >= 2) setIsCameraReady(true);
+        };
+
+        video.onloadedmetadata = () => {
+          console.log('[ImageUpload] loadedmetadata');
+          video.play()
+            .then(() => console.log('[ImageUpload] video.play() resolved'))
+            .catch((err) => console.warn('[ImageUpload] video.play() error', err));
+        };
+        video.onloadeddata = markReady as any;
+        video.oncanplay = markReady as any;
+        video.onplaying = markReady as any;
+
+        if (video.readyState >= 2) {
+          setIsCameraReady(true);
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error accessing camera:', error);
+      let description = "Please allow camera access to capture images";
+      if (error?.name === 'NotAllowedError') description = 'Camera permission denied. Enable it in your browser settings.';
+      if (error?.name === 'NotFoundError') description = 'No camera found on this device.';
+      if (window.isSecureContext === false) description = 'Camera requires HTTPS. Please open the app over https://';
       toast({
-        title: "Camera access denied",
-        description: "Please allow camera access to capture images",
-        variant: "destructive",
+        title: 'Camera error',
+        description,
+        variant: 'destructive',
       });
     }
   };
@@ -58,10 +138,18 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       stream.getTracks().forEach(track => track.stop());
       setStream(null);
     }
+    setIsCameraReady(false);
     setIsCameraOpen(false);
   };
 
   const captureImage = () => {
+    if (!isCameraReady) {
+      toast({
+        title: "Camera not ready",
+        description: "Please wait for the preview before capturing.",
+      });
+      return;
+    }
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -113,6 +201,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
             ref={videoRef}
             autoPlay
             playsInline
+            muted
             className="w-full h-64 object-cover rounded-lg bg-black"
           />
           <Button
@@ -124,8 +213,11 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
             <X className="h-4 w-4" />
           </Button>
         </div>
+        {!isCameraReady && (
+          <p className="text-sm text-muted-foreground">Initializing camera...</p>
+        )}
         <div className="flex gap-2">
-          <Button onClick={captureImage} className="flex-1">
+          <Button onClick={captureImage} className="flex-1" disabled={!isCameraReady}>
             <Camera className="h-4 w-4 mr-2" />
             Capture
           </Button>
@@ -171,6 +263,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        capture="environment"
         onChange={handleFileSelect}
         className="hidden"
       />
