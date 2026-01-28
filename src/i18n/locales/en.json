@@ -119,5 +119,37 @@
   "footer": {
     "developedBy": "Developed By",
     "tagline": "Empowering farmers with AI-powered precision agriculture"
+  },
+  "subscription": {
+    "badge": "Expert Mentorship",
+    "title": "1-to-1 Mentorship Plans",
+    "description": "Get personalized guidance on fertilizers and pesticides from agricultural experts. Choose a plan that fits your farming needs.",
+    "perMonth": "Monthly Plan",
+    "popular": "Most Popular",
+    "choosePlan": "Choose Plan",
+    "note": "All plans include WhatsApp support. Contact us after selecting a plan to get started.",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "feature1": "2 consultation calls per month",
+        "feature2": "WhatsApp query support",
+        "feature3": "Basic fertilizer recommendations"
+      },
+      "standard": {
+        "name": "Standard",
+        "feature1": "5 consultation calls per month",
+        "feature2": "Priority WhatsApp support",
+        "feature3": "Detailed fertilizer & pesticide guide",
+        "feature4": "Crop-specific treatment plans"
+      },
+      "premium": {
+        "name": "Premium",
+        "feature1": "Unlimited consultation calls",
+        "feature2": "24/7 WhatsApp priority support",
+        "feature3": "Complete fertilizer & pesticide guide",
+        "feature4": "Personalized crop management plan",
+        "feature5": "On-field visit (1 per quarter)"
+      }
+    }
   }
 }
