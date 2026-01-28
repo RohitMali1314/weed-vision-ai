@@ -66,14 +66,36 @@ const Index = () => {
     setIsProcessing(true);
     
     try {
-      const formData = new FormData();
-      formData.append('file', selectedImage);  // 👈 must match Flask's "file"
-
-      // Call Flask backend /predict route
-      const response = await fetch('http://127.0.0.1:5000/predict', {
-        method: 'POST',
-        body: formData,
-      });
+      let response: Response;
+      
+      // Check if running locally or in production
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      
+      if (isLocalhost) {
+        // Direct call to Flask backend for local development
+        const formData = new FormData();
+        formData.append('file', selectedImage);
+        response = await fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          body: formData,
+        });
+      } else {
+        // Use edge function proxy for production
+        const reader = new FileReader();
+        const imageData = await new Promise<string>((resolve) => {
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(selectedImage);
+        });
+        
+        response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/predict-proxy`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ imageData }),
+        });
+      }
 
       if (!response.ok) {
         throw new Error('Failed to process image');
