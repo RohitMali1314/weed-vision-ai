@@ -131,3 +131,34 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Hover scale animation for interactive elements */
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  /* Pulse animation for emphasis */
+  .pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Agricultural texture overlay */
+  .farm-texture {
+    background-image: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        hsl(var(--wheat) / 0.03) 2px,
+        hsl(var(--wheat) / 0.03) 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(var(--crop) / 0.03) 2px,
+        hsl(var(--crop) / 0.03) 4px
+      );
+  }
+}

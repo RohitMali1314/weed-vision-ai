@@ -1,6 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface FertilizerData {
   name: string;
@@ -46,7 +49,37 @@ const convertToIndianUnits = (quantity: string): string => {
   });
 };
 
+// Estimated prices in INR for common fertilizers
+const getFertilizerPrice = (name: string): string => {
+  const normalized = name.toLowerCase();
+  
+  // Common herbicides and their approximate prices per liter/kg in INR
+  if (normalized.includes('glyphosate')) return '₹800-1200/L';
+  if (normalized.includes('2,4-d')) return '₹600-900/L';
+  if (normalized.includes('atrazine')) return '₹700-1000/L';
+  if (normalized.includes('pendimethalin')) return '₹500-800/L';
+  if (normalized.includes('metribuzin')) return '₹1000-1500/kg';
+  if (normalized.includes('paraquat')) return '₹900-1200/L';
+  if (normalized.includes('dicamba')) return '₹800-1100/L';
+  
+  // Default price range
+  return '₹600-1200';
+};
+
+// Generate store URLs for different e-commerce platforms
+const getStoreUrls = (fertilizerName: string) => {
+  const searchTerm = encodeURIComponent(`${fertilizerName} herbicide fertilizer agriculture`);
+  
+  return {
+    amazon: `https://www.amazon.in/s?k=${searchTerm}`,
+    flipkart: `https://www.flipkart.com/search?q=${searchTerm}`,
+    bigbasket: `https://www.bigbasket.com/ps/?q=${searchTerm}`,
+  };
+};
+
 export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendationsProps) => {
+  const { t } = useTranslation();
+
   if (!fertilizers || fertilizers.length === 0) {
     return null;
   }
@@ -65,53 +98,93 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
         </CardDescription>
       </CardHeader>
       <CardContent className="p-8">
-        <div className="rounded-lg border">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-wheat/5">
-                <TableHead className="w-[50px]">#</TableHead>
-                <TableHead>Fertilizer Name</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Application Frequency</TableHead>
-                {fertilizers.some(f => f.type) && <TableHead>Type</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {fertilizers.map((fertilizer, index) => (
-                <TableRow key={index} className="hover:bg-wheat/5">
-                  <TableCell className="font-medium text-muted-foreground">
-                    {index + 1}
-                  </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🧪</span>
-                    <span className="font-semibold">{normalizeText(fertilizer.name)}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline" className="bg-crop/10 border-crop">
-                    {convertToIndianUnits(fertilizer.quantity)}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">📅</span>
-                    <span className="text-sm">{normalizeText(fertilizer.frequency)}</span>
-                  </div>
-                </TableCell>
-                  {fertilizers.some(f => f.type) && (
-                    <TableCell>
-                      {fertilizer.type && (
-                        <Badge variant="secondary" className="bg-soil/10">
-                          {fertilizer.type}
+        <div className="space-y-6">
+          {fertilizers.map((fertilizer, index) => {
+            const storeUrls = getStoreUrls(fertilizer.name);
+            
+            return (
+              <Card key={index} className="border-2 border-wheat/30 hover:border-crop/50 transition-all duration-300 hover:shadow-crop animate-fade-in">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    {/* Fertilizer Header */}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-wheat/20">
+                            <span className="text-xl">🧪</span>
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-lg text-foreground">
+                              {normalizeText(fertilizer.name)}
+                            </h3>
+                            {fertilizer.type && (
+                              <Badge variant="secondary" className="bg-soil/10 mt-1">
+                                {fertilizer.type}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="bg-accent/10 border-accent font-semibold text-base px-3 py-1">
+                        {getFertilizerPrice(fertilizer.name)}
+                      </Badge>
+                    </div>
+
+                    {/* Details Grid */}
+                    <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-wheat/5 border border-wheat/20">
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground font-medium">Quantity</p>
+                        <Badge variant="outline" className="bg-crop/10 border-crop">
+                          {convertToIndianUnits(fertilizer.quantity)}
                         </Badge>
-                      )}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground font-medium">Frequency</p>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">📅</span>
+                          <span className="text-sm font-medium">{normalizeText(fertilizer.frequency)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Buy Buttons */}
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-muted-foreground">Buy from trusted stores:</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => window.open(storeUrls.amazon, '_blank')}
+                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          <span className="font-semibold">Amazon</span>
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => window.open(storeUrls.flipkart, '_blank')}
+                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          <span className="font-semibold">Flipkart</span>
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => window.open(storeUrls.bigbasket, '_blank')}
+                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          <span className="font-semibold">BigBasket</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
