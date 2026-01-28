@@ -5,6 +5,7 @@ import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
 import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
 import { SupportChat } from "@/components/SupportChat";
+import { SubscriptionPlans } from "@/components/SubscriptionPlans";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { FeatureCard } from "@/components/FeatureCard";
 import { StatCard } from "@/components/StatCard";
@@ -459,6 +460,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Subscription Plans Section */}
+      <SubscriptionPlans />
       
       <SupportChat />
       
