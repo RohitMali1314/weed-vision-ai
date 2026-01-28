@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Leaf, Sprout, TreeDeciduous } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Check, Leaf, Sprout, TreeDeciduous, Smartphone, CreditCard, MessageCircle, Copy, CheckCircle2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Plan {
   id: string;
@@ -53,8 +56,42 @@ const plans: Plan[] = [
   },
 ];
 
+const UPI_ID = "agrivision@upi";
+const WHATSAPP_NUMBER = "919876543210";
+
 export const SubscriptionPlans = () => {
   const { t } = useTranslation();
+  const { toast } = useToast();
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleChoosePlan = (plan: Plan) => {
+    setSelectedPlan(plan);
+  };
+
+  const handleCopyUPI = () => {
+    navigator.clipboard.writeText(UPI_ID);
+    setCopied(true);
+    toast({
+      title: t("subscription.payment.copied"),
+      description: UPI_ID,
+    });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleUPIPayment = (app: string) => {
+    if (!selectedPlan) return;
+    const upiLink = `upi://pay?pa=${UPI_ID}&pn=AgriVision%20AI&am=${selectedPlan.price}&cu=INR&tn=${encodeURIComponent(t(selectedPlan.nameKey) + " Plan")}`;
+    window.open(upiLink, "_blank");
+  };
+
+  const handleWhatsAppContact = () => {
+    if (!selectedPlan) return;
+    const message = encodeURIComponent(
+      `Hi, I want to subscribe to the ${t(selectedPlan.nameKey)} plan (₹${selectedPlan.price}/month) for AgriVision AI mentorship.`
+    );
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
+  };
 
   return (
     <section className="py-16 px-4" id="subscription">
@@ -121,6 +158,7 @@ export const SubscriptionPlans = () => {
                       : "bg-secondary hover:bg-secondary/80"
                   }`}
                   variant={plan.popular ? "default" : "secondary"}
+                  onClick={() => handleChoosePlan(plan)}
                 >
                   {t("subscription.choosePlan")}
                 </Button>
@@ -133,6 +171,103 @@ export const SubscriptionPlans = () => {
           {t("subscription.note")}
         </p>
       </div>
+
+      {/* Payment Options Dialog */}
+      <Dialog open={!!selectedPlan} onOpenChange={(open) => !open && setSelectedPlan(null)}>
+        <DialogContent className="sm:max-w-md bg-background border-border">
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl">
+              {t("subscription.payment.title")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {selectedPlan && (
+                <span className="text-lg font-semibold text-primary">
+                  {t(selectedPlan.nameKey)} - ₹{selectedPlan.price}/mo
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* UPI Payment Options */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                <Smartphone className="h-4 w-4" />
+                {t("subscription.payment.upiTitle")}
+              </h4>
+              
+              <div className="grid grid-cols-3 gap-2">
+                <Button
+                  variant="outline"
+                  className="flex flex-col items-center gap-1 h-auto py-3 border-border hover:bg-secondary"
+                  onClick={() => handleUPIPayment("gpay")}
+                >
+                  <span className="text-lg">💳</span>
+                  <span className="text-xs">Google Pay</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex flex-col items-center gap-1 h-auto py-3 border-border hover:bg-secondary"
+                  onClick={() => handleUPIPayment("phonepe")}
+                >
+                  <span className="text-lg">📱</span>
+                  <span className="text-xs">PhonePe</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex flex-col items-center gap-1 h-auto py-3 border-border hover:bg-secondary"
+                  onClick={() => handleUPIPayment("paytm")}
+                >
+                  <span className="text-lg">💰</span>
+                  <span className="text-xs">Paytm</span>
+                </Button>
+              </div>
+
+              {/* UPI ID Copy */}
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-secondary/50 border border-border">
+                <CreditCard className="h-4 w-4 text-muted-foreground shrink-0" />
+                <span className="text-sm flex-1 font-mono">{UPI_ID}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2"
+                  onClick={handleCopyUPI}
+                >
+                  {copied ? (
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  {t("subscription.payment.or")}
+                </span>
+              </div>
+            </div>
+
+            {/* WhatsApp Contact */}
+            <Button
+              className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white"
+              onClick={handleWhatsAppContact}
+            >
+              <MessageCircle className="h-4 w-4 mr-2" />
+              {t("subscription.payment.whatsapp")}
+            </Button>
+
+            <p className="text-xs text-center text-muted-foreground">
+              {t("subscription.payment.note")}
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
