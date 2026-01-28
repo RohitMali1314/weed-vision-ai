@@ -150,6 +150,14 @@
         "feature4": "Personalized crop management plan",
         "feature5": "On-field visit (1 per quarter)"
       }
+    },
+    "payment": {
+      "title": "Choose Payment Method",
+      "upiTitle": "Pay with UPI",
+      "or": "or",
+      "whatsapp": "Contact via WhatsApp",
+      "copied": "UPI ID Copied!",
+      "note": "After payment, share screenshot on WhatsApp to activate your plan."
     }
   }
 }
