@@ -16,7 +16,7 @@ export const BackendStatusBadge = ({ onStatusChange }: BackendStatusBadgeProps) 
   const checkHealth = useCallback(async () => {
     setStatus("checking");
     try {
-      const backendUrl = "https://backend-w7g6.onrender.com";
+      const backendUrl = "https://backend-rid6.onrender.com";
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -41,7 +41,7 @@ export const BackendStatusBadge = ({ onStatusChange }: BackendStatusBadgeProps) 
       // Might be CORS or server sleeping
       // Try a no-cors ping to see if it's at least responding
       try {
-        const backendUrl = "https://backend-w7g6.onrender.com";
+        const backendUrl = "https://backend-rid6.onrender.com";
         await fetch(backendUrl, { method: "GET", mode: "no-cors" });
         // If no error, server is at least starting
         setStatus("starting");
