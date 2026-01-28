@@ -33,7 +33,7 @@ serve(async (req) => {
       // Prefer non-VITE secret for server-side/edge usage
       Deno.env.get("FLASK_BACKEND_URL") ||
       Deno.env.get("VITE_FLASK_API_URL") ||
-      "https://backend-w7g6.onrender.com"
+      "https://backend-rid6.onrender.com"
     ).replace(/\/+$/, "");
 
     // Allow secrets to be set as either base URL or full /predict URL.
