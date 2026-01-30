@@ -20,7 +20,8 @@
     "analyzing": "Analyzing Crop Field...",
     "reset": "Reset",
     "capture": "Capture",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "coldStartWarning": "Server is waking up... First requests may take 30-60 seconds on free hosting. Please wait!"
   },
   "results": {
     "title": "Field Analysis Results",

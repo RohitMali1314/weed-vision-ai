@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Camera, Upload, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Camera, Upload, Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { DetectionTable } from "@/components/DetectionTable";
@@ -38,9 +39,22 @@ const Index = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [processingTime, setProcessingTime] = useState(0);
   const [results, setResults] = useState<PredictionResult | null>(null);
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  // Track processing time for cold start warning
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isProcessing) {
+      setProcessingTime(0);
+      interval = setInterval(() => {
+        setProcessingTime(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isProcessing]);
 
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
@@ -271,6 +285,17 @@ const Index = () => {
                         🔄 {t("upload.reset")}
                       </Button>
                     </div>
+                    
+                    {/* Cold Start Warning */}
+                    {isProcessing && processingTime >= 5 && (
+                      <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+                        <AlertCircle className="h-4 w-4 text-amber-600" />
+                        <AlertDescription className="text-amber-800 dark:text-amber-200">
+                          ⏳ {t("upload.coldStartWarning", "Server is waking up... First requests may take 30-60 seconds on free hosting. Please wait!")}
+                          <span className="ml-2 font-mono text-sm">({processingTime}s)</span>
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </div>
                 )}
               </CardContent>
