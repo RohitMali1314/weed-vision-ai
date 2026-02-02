@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Upload, Loader2, AlertCircle, Leaf, Sparkles, Shield, Zap } from "lucide-react";
+import { Camera, Upload, Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -160,150 +160,139 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background field-bg organic-pattern relative overflow-hidden">
-      {/* Subtle ambient background elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-gradient-to-br from-crop/5 to-transparent blur-3xl" />
-        <div className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-wheat/8 to-transparent blur-3xl" />
-        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-gradient-to-b from-primary/3 to-transparent blur-2xl animate-pulse" style={{ animationDuration: '8s' }} />
+    <div className="min-h-screen bg-gradient-field relative overflow-hidden farm-texture">
+      {/* Agricultural pattern overlay with animated elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M30 10c-2 0-4 1-5 3l-5 10c-1 2-1 4 0 6l5 10c1 2 3 3 5 3s4-1 5-3l5-10c1-2 1-4 0-6l-5-10c-1-2-3-3-5-3z'/%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '60px 60px'
+        }} />
+      </div>
+      
+      {/* Floating decorative farm elements */}
+      <div className="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
+        <span className="text-6xl">🌾</span>
+      </div>
+      <div className="absolute top-40 right-20 w-16 h-16 opacity-10 animate-float" style={{ animationDelay: '1s' }}>
+        <span className="text-6xl">🚜</span>
+      </div>
+      <div className="absolute bottom-40 left-1/4 w-16 h-16 opacity-10 animate-float" style={{ animationDelay: '2s' }}>
+        <span className="text-6xl">🌻</span>
       </div>
 
-      {/* Hero Section - Modern & Minimal */}
-      <header className="relative bg-gradient-hero text-primary-foreground overflow-hidden">
-        {/* Geometric pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <pattern id="hero-grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="0.5" fill="currentColor" opacity="0.4" />
-              </pattern>
-            </defs>
-            <rect width="100" height="100" fill="url(#hero-grid)" />
-          </svg>
-        </div>
-        
-        <div className="relative container mx-auto px-6 py-16 md:py-24">
-          {/* Top bar */}
-          <div className="flex items-center justify-between mb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                <Leaf className="w-5 h-5" />
-              </div>
-              <span className="font-semibold text-lg hidden sm:block">WeedVision AI</span>
-            </div>
+      {/* Hero Section with farm-inspired design */}
+      <div className="relative bg-gradient-primary text-primary-foreground py-20 shadow-crop">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex justify-end mb-4">
             <LanguageSelector />
           </div>
-          
-          {/* Hero content */}
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm mb-6">
-              <Sparkles className="w-4 h-4" />
-              <span>{t("hero.accuracy")}</span>
+          <div className="text-center">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4 backdrop-blur-sm">
+              <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L13.09 7.91L19 9L13.09 10.09L12 16L10.91 10.09L5 9L10.91 7.91L12 2Z" opacity="0.7"/>
+                <path d="M19 15L20.09 20.91L26 22L20.09 23.09L19 29L17.91 23.09L12 22L17.91 20.91L19 15Z" opacity="0.5"/>
+                <path d="M7 8L8.09 13.91L14 15L8.09 16.09L7 22L5.91 16.09L0 15L5.91 13.91L7 8Z" opacity="0.3"/>
+              </svg>
             </div>
-            
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-              {t("hero.title")}
-              <span className="block text-white/80 text-2xl md:text-3xl lg:text-4xl font-medium mt-3">
-                {t("hero.subtitle")}
-              </span>
+          </div>
+            <h1 className="text-4xl md:text-7xl font-bold mb-6 leading-tight">
+              🌾 {t("hero.title")}
+              <span className="block text-3xl md:text-5xl mt-2 opacity-90">{t("hero.subtitle")}</span>
             </h1>
-            
-            <p className="text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed mb-10">
+            <p className="text-xl md:text-2xl opacity-90 max-w-4xl mx-auto leading-relaxed">
               {t("hero.description")}
             </p>
-            
-            {/* Feature pills */}
-            <div className="flex flex-wrap gap-3">
-              {[
-                { icon: Zap, label: t("hero.realtime") },
-                { icon: Shield, label: t("hero.farmReady") },
-              ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm">
-                  <feature.icon className="w-4 h-4 text-white/60" />
-                  <span className="text-white/80">{feature.label}</span>
-                </div>
-              ))}
+            <div className="mt-8 flex justify-center space-x-8 text-sm opacity-80">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-accent rounded-full"></div>
+                <span>{t("hero.realtime")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-wheat rounded-full"></div>
+                <span>{t("hero.accuracy")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-crop rounded-full"></div>
+                <span>{t("hero.farmReady")}</span>
+              </div>
             </div>
           </div>
         </div>
         
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
-      </header>
+        {/* Decorative farm elements */}
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      </div>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Upload Section */}
-          <div className="space-y-6 animate-fade-in">
-            <Card className="glass border border-border/50 shadow-medium hover-lift">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-xl font-semibold">
-                  <div className="p-2.5 bg-primary/10 rounded-xl">
-                    <Upload className="h-5 w-5 text-primary" />
+      <div className="container mx-auto px-4 py-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Upload Section with agricultural styling */}
+          <div className="space-y-8 animate-slide-up">
+            <Card className="shadow-crop border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:shadow-strong transition-shadow duration-300">
+              <CardHeader className="bg-gradient-earth/10 border-b border-soil/20">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Upload className="h-6 w-6 text-primary" />
                   </div>
                   {t("upload.title")}
                 </CardTitle>
-                <CardDescription className="text-muted-foreground">
+                <CardDescription className="text-base">
                   {t("upload.description")}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-5 pt-0">
+              <CardContent className="space-y-6 p-8">
                 <ImageUpload onImageSelect={handleImageSelect} />
                 
                 {imagePreview && (
-                  <div className="space-y-5">
-                    {/* Image preview with overlay */}
-                    <div className="relative group rounded-xl overflow-hidden">
+                  <div className="space-y-6">
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-primary/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
                       <img
                         src={imagePreview}
                         alt="Field Image Preview"
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="relative w-full h-72 object-cover rounded-xl border-2 border-primary/30 shadow-medium"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-white/90 dark:bg-black/70 backdrop-blur-sm rounded-full text-sm font-medium text-foreground">
-                        <div className="w-2 h-2 bg-crop rounded-full animate-pulse" />
-                        {t("upload.ready")}
+                      <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                        📸 {t("upload.ready")}
                       </div>
                     </div>
                     
-                    {/* Action buttons */}
                     <div className="flex gap-3">
                       <Button
                         onClick={handleProcessImage}
                         disabled={isProcessing}
-                        className="flex-1 h-12 text-base font-medium shadow-soft hover:shadow-medium transition-all glow-primary"
+                        className="flex-1 h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-crop"
                         size="lg"
                       >
                         {isProcessing ? (
                           <>
-                            <Loader2 className="h-5 w-5 animate-spin" />
-                            {t("upload.analyzing")}
+                            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                            🔍 {t("upload.analyzing")}
                           </>
                         ) : (
                           <>
-                            <Sparkles className="h-5 w-5" />
-                            {t("upload.analyze")}
+                            🧠 {t("upload.analyze")}
                           </>
                         )}
                       </Button>
                       <Button 
                         variant="outline" 
                         onClick={handleReset}
-                        className="px-6 h-12 border-border/50 hover:bg-muted/50 transition-all"
+                        className="px-8 h-12 border-2 border-primary/30 hover:bg-primary/10"
                         size="lg"
                       >
-                        {t("upload.reset")}
+                        🔄 {t("upload.reset")}
                       </Button>
                     </div>
                     
                     {/* Cold Start Warning */}
                     {isProcessing && processingTime >= 5 && (
-                      <Alert className="border-warning/30 bg-warning/10">
-                        <AlertCircle className="h-4 w-4 text-warning" />
-                        <AlertDescription className="text-warning-foreground">
-                          {t("upload.coldStartWarning", "Server is waking up... First requests may take 30-60 seconds on free hosting. Please wait!")}
-                          <span className="ml-2 font-mono text-xs bg-warning/20 px-2 py-0.5 rounded">{processingTime}s</span>
+                      <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+                        <AlertCircle className="h-4 w-4 text-amber-600" />
+                        <AlertDescription className="text-amber-800 dark:text-amber-200">
+                          ⏳ {t("upload.coldStartWarning", "Server is waking up... First requests may take 30-60 seconds on free hosting. Please wait!")}
+                          <span className="ml-2 font-mono text-sm">({processingTime}s)</span>
                         </AlertDescription>
                       </Alert>
                     )}
@@ -312,22 +301,22 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Detection Results Table */}
+            {/* Detection Results Table with farm theme */}
             {results && (
               <>
-                <Card className="glass border border-border/50 shadow-medium animate-slide-up">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-3 text-lg font-semibold">
-                      <div className="p-2.5 bg-crop/15 rounded-xl">
-                        <Leaf className="h-5 w-5 text-crop" />
+                <Card className="shadow-crop border-2 border-accent/30 bg-card/90 backdrop-blur-sm hover:shadow-strong transition-all duration-300 animate-grow">
+                  <CardHeader className="bg-gradient-to-r from-accent/10 to-crop/10 border-b border-accent/20">
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <div className="p-2 bg-accent/20 rounded-lg">
+                        <span className="text-xl">🌱</span>
                       </div>
                       {t("results.title")}
                     </CardTitle>
-                    <CardDescription>
-                      {t("results.detected")} <span className="font-semibold text-foreground">{results.detections.length}</span> {t("results.instances")}
+                    <CardDescription className="text-base">
+                      🎯 {t("results.detected")} {results.detections.length} {t("results.instances")}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
+                  <CardContent className="p-8">
                     <DetectionTable detections={results.detections} />
                   </CardContent>
                 </Card>
@@ -340,27 +329,27 @@ const Index = () => {
             )}
           </div>
 
-          {/* Results Display Section */}
-          <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+          {/* Results Section with agricultural design */}
+          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             {results ? (
               <ResultsDisplay results={results} />
             ) : (
-              <Card className="glass border border-border/50 shadow-soft h-full min-h-[400px] flex items-center justify-center">
-                <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="mb-8 p-8 bg-gradient-to-br from-muted/50 to-muted/30 rounded-3xl">
-                    <Camera className="h-16 w-16 text-muted-foreground/60" />
+              <Card className="shadow-medium border-2 border-muted bg-card/70 backdrop-blur-sm">
+                <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="mb-6 p-6 bg-gradient-earth/20 rounded-2xl">
+                    <Camera className="h-20 w-20 text-soil" />
                   </div>
-                  <h3 className="text-2xl font-semibold mb-3 text-foreground">{t("results.readyTitle")}</h3>
-                  <p className="text-muted-foreground max-w-sm leading-relaxed">
+                  <h3 className="text-2xl font-bold mb-4 text-foreground">🚜 {t("results.readyTitle")}</h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
                     {t("results.readyDescription")}
                   </p>
-                  <div className="mt-8 flex flex-wrap justify-center gap-4">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-full text-sm text-muted-foreground">
-                      <Leaf className="w-4 h-4" />
+                  <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">🌾</span>
                       <span>{t("results.cropProtection")}</span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-full text-sm text-muted-foreground">
-                      <Zap className="w-4 h-4" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">🎯</span>
                       <span>{t("results.precisionDetection")}</span>
                     </div>
                   </div>
@@ -369,28 +358,29 @@ const Index = () => {
             )}
           </div>
         </div>
-      </main>
+      </div>
       
       <SupportChat />
       
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-border/50 mt-16 bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-10">
+      {/* Team Credits Footer */}
+      <footer className="relative z-10 bg-gradient-earth/20 border-t-2 border-primary/20 mt-16">
+        <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
               {t("footer.developedBy")}
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {["Rohit Mali", "Sakshi Padalkar", "Shivam Narevekar"].map((name, i) => (
-                <span 
-                  key={i} 
-                  className="px-4 py-2 bg-muted/50 rounded-full text-sm font-medium text-foreground border border-border/50"
-                >
-                  {name}
-                </span>
-              ))}
+            </h3>
+            <div className="flex flex-wrap justify-center gap-4 text-muted-foreground">
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👨‍💻 Rohit Mali
+              </span>
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👩‍💻 Sakshi Padalkar
+              </span>
+              <span className="px-4 py-2 bg-card rounded-lg border border-primary/20 shadow-soft">
+                👨‍💻 Shivam Narevekar
+              </span>
             </div>
-            <p className="text-xs text-muted-foreground/60">
+            <p className="mt-4 text-sm text-muted-foreground">
               {t("footer.tagline")}
             </p>
           </div>

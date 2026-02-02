@@ -8,132 +8,110 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Premium Earth Tones - Sophisticated Agricultural */
-    --background: 40 12% 96%;
-    --foreground: 30 20% 12%;
+    /* Agriculture-inspired background - warm cream like wheat fields */
+    --background: 45 15% 97%;
+    --foreground: 25 25% 15%;
 
-    /* Cards with subtle warmth */
-    --card: 40 15% 98%;
-    --card-foreground: 30 20% 12%;
+    /* Cards with earthy paper texture feel */
+    --card: 42 20% 95%;
+    --card-foreground: 25 25% 15%;
 
-    --popover: 40 15% 98%;
-    --popover-foreground: 30 20% 12%;
+    --popover: 42 20% 95%;
+    --popover-foreground: 25 25% 15%;
 
-    /* Primary: Deep Forest Green - Professional & Natural */
-    --primary: 152 45% 28%;
-    --primary-foreground: 40 15% 98%;
+    /* Primary: Rich forest green like healthy crops */
+    --primary: 140 60% 35%;
+    --primary-foreground: 45 15% 97%;
 
-    /* Secondary: Warm Wheat Gold */
-    --secondary: 42 55% 92%;
-    --secondary-foreground: 152 45% 22%;
+    /* Secondary: Soft wheat/grain color */
+    --secondary: 45 35% 88%;
+    --secondary-foreground: 140 60% 25%;
 
-    /* Muted: Soft Stone Gray */
-    --muted: 35 12% 90%;
-    --muted-foreground: 30 15% 40%;
+    /* Muted: Light soil/earth tones */
+    --muted: 35 20% 92%;
+    --muted-foreground: 35 15% 45%;
 
-    /* Accent: Fresh Sage Green */
-    --accent: 145 35% 82%;
-    --accent-foreground: 152 45% 22%;
+    /* Accent: Fresh spring green */
+    --accent: 110 45% 75%;
+    --accent-foreground: 140 60% 25%;
 
-    --destructive: 0 72% 55%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Borders: Warm Earth */
-    --border: 35 18% 82%;
-    --input: 35 18% 85%;
-    --ring: 152 45% 28%;
+    /* Borders: Subtle earth tone */
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 140 60% 35%;
 
-    /* Premium Gradient System */
-    --gradient-hero: linear-gradient(135deg, hsl(152 45% 28%) 0%, hsl(145 40% 35%) 50%, hsl(138 35% 42%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(40 15% 99%) 0%, hsl(40 12% 96%) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(40 20% 100% / 0.9) 0%, hsl(40 15% 98% / 0.7) 100%);
-    --gradient-earth: linear-gradient(180deg, hsl(35 25% 88%) 0%, hsl(30 20% 82%) 100%);
-    --gradient-sky: linear-gradient(180deg, hsl(200 30% 95%) 0%, hsl(180 20% 92%) 50%, hsl(145 25% 90%) 100%);
-    --gradient-field: radial-gradient(ellipse at 50% 100%, hsl(145 30% 85%) 0%, hsl(40 12% 96%) 70%);
+    /* Agriculture-themed gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(140 60% 35%), hsl(95 45% 40%));
+    --gradient-secondary: linear-gradient(135deg, hsl(45 35% 88%), hsl(45 15% 97%));
+    --gradient-field: linear-gradient(180deg, hsl(110 30% 85%) 0%, hsl(140 40% 75%) 50%, hsl(95 35% 65%) 100%);
+    --gradient-earth: linear-gradient(45deg, hsl(35 40% 75%), hsl(25 35% 70%));
     
-    /* Sophisticated Shadow System */
-    --shadow-xs: 0 1px 2px hsl(30 20% 15% / 0.04);
-    --shadow-soft: 0 4px 12px -2px hsl(30 20% 15% / 0.08);
-    --shadow-medium: 0 8px 24px -4px hsl(30 20% 15% / 0.1);
-    --shadow-strong: 0 16px 48px -8px hsl(30 20% 15% / 0.12);
-    --shadow-glow: 0 0 40px hsl(152 45% 28% / 0.15);
-    --shadow-inset: inset 0 2px 4px hsl(30 20% 15% / 0.05);
+    /* Agriculture-themed shadows with earth tones */
+    --shadow-soft: 0 2px 8px -2px hsl(35 30% 60% / 0.15);
+    --shadow-medium: 0 4px 16px -4px hsl(35 30% 60% / 0.2);
+    --shadow-strong: 0 8px 32px -8px hsl(35 30% 60% / 0.3);
+    --shadow-crop: 0 4px 20px -4px hsl(140 60% 35% / 0.25);
     
-    /* Agricultural Accent Palette */
-    --success: 152 45% 28%;
-    --success-foreground: 40 15% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 38 92% 10%;
-    --soil: 25 30% 65%;
-    --wheat: 42 65% 70%;
-    --crop: 145 40% 50%;
-    --terracotta: 18 60% 55%;
-    --moss: 140 25% 45%;
+    /* Themed colors for agriculture context */
+    --success: 140 60% 35%;
+    --success-foreground: 45 15% 97%;
+    --warning: 45 93% 58%;
+    --warning-foreground: 45 93% 15%;
+    --soil: 25 35% 70%;
+    --wheat: 45 60% 75%;
+    --crop: 95 45% 55%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 40 15% 98%;
-    --sidebar-foreground: 30 20% 20%;
-    --sidebar-primary: 152 45% 28%;
-    --sidebar-primary-foreground: 40 15% 98%;
-    --sidebar-accent: 145 35% 92%;
-    --sidebar-accent-foreground: 152 45% 22%;
-    --sidebar-border: 35 18% 85%;
-    --sidebar-ring: 152 45% 35%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 30 15% 8%;
-    --foreground: 40 15% 95%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 30 12% 12%;
-    --card-foreground: 40 15% 95%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 30 12% 12%;
-    --popover-foreground: 40 15% 95%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 145 50% 45%;
-    --primary-foreground: 30 15% 8%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 30 15% 18%;
-    --secondary-foreground: 145 50% 45%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 30 10% 20%;
-    --muted-foreground: 40 10% 60%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 145 30% 25%;
-    --accent-foreground: 145 50% 70%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62% 45%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 30 12% 22%;
-    --input: 30 12% 22%;
-    --ring: 145 50% 45%;
-
-    --gradient-hero: linear-gradient(135deg, hsl(30 15% 10%) 0%, hsl(145 30% 15%) 50%, hsl(30 15% 12%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(30 12% 14%) 0%, hsl(30 12% 10%) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(30 15% 15% / 0.8) 0%, hsl(30 12% 12% / 0.6) 100%);
-    
-    --shadow-soft: 0 4px 12px -2px hsl(0 0% 0% / 0.3);
-    --shadow-medium: 0 8px 24px -4px hsl(0 0% 0% / 0.4);
-    --shadow-strong: 0 16px 48px -8px hsl(0 0% 0% / 0.5);
-    --shadow-glow: 0 0 40px hsl(145 50% 45% / 0.2);
-
-    --soil: 25 20% 40%;
-    --wheat: 42 40% 50%;
-    --crop: 145 35% 45%;
-    --terracotta: 18 45% 45%;
-    --moss: 140 20% 35%;
-
-    --sidebar-background: 30 12% 10%;
-    --sidebar-foreground: 40 15% 90%;
-    --sidebar-primary: 145 50% 45%;
-    --sidebar-primary-foreground: 30 15% 8%;
-    --sidebar-accent: 145 25% 18%;
-    --sidebar-accent-foreground: 145 50% 70%;
-    --sidebar-border: 30 12% 20%;
-    --sidebar-ring: 145 50% 50%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -148,84 +126,32 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
-  /* Glassmorphism card effect */
-  .glass {
-    background: var(--gradient-glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.5);
+  /* Hover scale animation for interactive elements */
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
   }
   
-  /* Hover effects */
-  .hover-lift {
-    @apply transition-all duration-300;
-  }
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-strong);
+  /* Pulse animation for emphasis */
+  .pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
   
-  /* Premium grain texture overlay */
-  .grain-texture::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Organic pattern for agricultural feel */
-  .organic-pattern {
+  /* Agricultural texture overlay */
+  .farm-texture {
     background-image: 
-      radial-gradient(circle at 20% 80%, hsl(var(--crop) / 0.06) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, hsl(var(--wheat) / 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, hsl(var(--moss) / 0.04) 0%, transparent 60%);
-  }
-
-  /* Field gradient background */
-  .field-bg {
-    background: 
-      linear-gradient(180deg, hsl(200 20% 96%) 0%, hsl(145 20% 94%) 30%, hsl(40 15% 95%) 100%);
-  }
-
-  /* Shimmer loading effect */
-  .shimmer {
-    background: linear-gradient(
-      90deg,
-      hsl(var(--muted)) 0%,
-      hsl(var(--card)) 50%,
-      hsl(var(--muted)) 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  /* Glow effect for primary elements */
-  .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1);
-  }
-
-  /* Soft border glow */
-  .border-glow {
-    position: relative;
-  }
-  .border-glow::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.2));
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .border-glow:hover::after {
-    opacity: 1;
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        hsl(var(--wheat) / 0.03) 2px,
+        hsl(var(--wheat) / 0.03) 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(var(--crop) / 0.03) 2px,
+        hsl(var(--crop) / 0.03) 4px
+      );
   }
 }
