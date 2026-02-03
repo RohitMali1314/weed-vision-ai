@@ -87,6 +87,35 @@
     "preQuestion3": "How should I use the fertilizer recommendations?",
     "preQuestion4": "What image quality works best?"
   },
+  "voice": {
+    "welcome": "Hello! Upload your field photo to detect weeds and get recommendations",
+    "startListening": "Speak",
+    "stopListening": "Stop",
+    "speak": "Listen",
+    "stopSpeaking": "Stop"
+  },
+  "share": {
+    "whatsapp": "Share on WhatsApp"
+  },
+  "shop": {
+    "title": "Nearby Fertilizer Shops",
+    "description": "Find agricultural shops near you using GPS",
+    "findNearby": "Find Nearby Shops",
+    "searching": "Searching...",
+    "unnamed": "Agricultural Shop",
+    "nearYou": "Near you",
+    "searchGoogle": "Search on Google Maps",
+    "fertilizerNearby": "Fertilizer/Seed shops nearby",
+    "foundNearby": "shops found near you"
+  },
+  "location": {
+    "found": "Shops found!",
+    "notSupported": "Your browser does not support location",
+    "denied": "Please allow location access",
+    "unavailable": "Location not available",
+    "timeout": "Location timeout",
+    "error": "Location error"
+  },
   "footer": {
     "developedBy": "Developed By",
     "tagline": "🌾 Empowering farmers with AI-powered precision agriculture"
