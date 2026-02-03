@@ -65,7 +65,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Agriculture-themed colors
+        // Theme accent colors
         soil: "hsl(var(--soil))",
         wheat: "hsl(var(--wheat))",
         crop: "hsl(var(--crop))",
@@ -73,14 +73,14 @@ export default {
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-secondary": "var(--gradient-secondary)",
-        "gradient-field": "var(--gradient-field)",
-        "gradient-earth": "var(--gradient-earth)",
+        "gradient-glow": "var(--gradient-glow)",
+        "gradient-hero": "var(--gradient-hero)",
       },
       boxShadow: {
         "soft": "var(--shadow-soft)",
         "medium": "var(--shadow-medium)",
         "strong": "var(--shadow-strong)",
-        "crop": "var(--shadow-crop)",
+        "glow": "var(--shadow-glow)",
       },
       borderRadius: {
         lg: "var(--radius)",
