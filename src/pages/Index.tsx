@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Upload, Loader2, AlertCircle, Mic } from "lucide-react";
+import { Camera, Upload, Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -7,9 +7,11 @@ import { DetectionTable } from "@/components/DetectionTable";
 import { FertilizerRecommendations } from "@/components/FertilizerRecommendations";
 import { SupportChat } from "@/components/SupportChat";
 import { LanguageSelector } from "@/components/LanguageSelector";
-import { VoiceAssistant } from "@/components/VoiceAssistant";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { WhatsAppShare } from "@/components/WhatsAppShare";
 import { NearbyShopLocator } from "@/components/NearbyShopLocator";
+import { FeedbackSection } from "@/components/FeedbackSection";
+import { SMSNotification } from "@/components/SMSNotification";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -176,9 +178,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-glow"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex justify-end items-center gap-3 mb-4">
-            <VoiceAssistant 
-              textToSpeak={t("voice.welcome", "नमस्ते! अपने खेत की फोटो अपलोड करें और खरपतवार पहचानें")}
-            />
+            <ThemeToggle />
             <LanguageSelector />
           </div>
           <div className="text-center">
@@ -314,6 +314,9 @@ const Index = () => {
                   <FertilizerRecommendations fertilizers={results.fertilizers} />
                 )}
 
+                {/* SMS Notification */}
+                <SMSNotification detections={results.detections} />
+
                 {/* WhatsApp Share Button */}
                 <div className="flex justify-center">
                   <WhatsAppShare detections={results.detections} />
@@ -323,6 +326,9 @@ const Index = () => {
 
             {/* Nearby Shop Locator */}
             <NearbyShopLocator />
+
+            {/* Feedback Section */}
+            <FeedbackSection />
           </div>
 
           {/* Results Section */}
