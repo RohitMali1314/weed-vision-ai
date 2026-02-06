@@ -87,34 +87,41 @@
     "preQuestion3": "How should I use the fertilizer recommendations?",
     "preQuestion4": "What image quality works best?"
   },
-  "voice": {
-    "welcome": "Hello! Upload your field photo to detect weeds and get recommendations",
-    "startListening": "Speak",
-    "stopListening": "Stop",
-    "speak": "Listen",
-    "stopSpeaking": "Stop"
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
-  "share": {
-    "whatsapp": "Share on WhatsApp"
+  "feedback": {
+    "title": "Suggestions & Feedback",
+    "suggestions": "Suggestions",
+    "feedback": "Feedback",
+    "suggestionPlaceholder": "Share your ideas to improve this app...",
+    "feedbackPlaceholder": "Tell us what you think about this app...",
+    "sendSuggestion": "Send Suggestion",
+    "sendFeedback": "Send Feedback",
+    "sent": "Sent!",
+    "error": "Error",
+    "emptyMessage": "Please enter a message",
+    "success": "Thank you!",
+    "successMessage": "Your message has been received"
   },
-  "shop": {
-    "title": "Nearby Fertilizer Shops",
-    "description": "Find agricultural shops near you using GPS",
-    "findNearby": "Find Nearby Shops",
-    "searching": "Searching...",
-    "unnamed": "Agricultural Shop",
-    "nearYou": "Near you",
-    "searchGoogle": "Search on Google Maps",
-    "fertilizerNearby": "Fertilizer/Seed shops nearby",
-    "foundNearby": "shops found near you"
-  },
-  "location": {
-    "found": "Shops found!",
-    "notSupported": "Your browser does not support location",
-    "denied": "Please allow location access",
-    "unavailable": "Location not available",
-    "timeout": "Location timeout",
-    "error": "Location error"
+  "sms": {
+    "title": "Send Results to Mobile",
+    "placeholder": "Enter mobile number",
+    "send": "Send SMS",
+    "sending": "Sending...",
+    "sentButton": "Sent!",
+    "sent": "SMS Sent!",
+    "sentDescription": "Detection results sent to your phone",
+    "failed": "Failed to send",
+    "tryAgain": "Please try again later",
+    "invalidNumber": "Invalid Number",
+    "enterValid": "Please enter a valid 10-digit mobile number",
+    "note": "Standard SMS charges may apply",
+    "header": "🌱 Weed Detection Results:\n",
+    "footer": "\n\n🚜 Weed Vision AI - Kisan ka Saathi"
   },
   "footer": {
     "developedBy": "Developed By",
