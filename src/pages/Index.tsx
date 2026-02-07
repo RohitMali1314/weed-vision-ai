@@ -288,57 +288,11 @@ const Index = () => {
                 )}
               </CardContent>
             </Card>
-            {/* Nearby Shop Locator */}
-            <NearbyShopLocator />
           </div>
 
-          {/* Results Section */}
+          {/* Empty placeholder - will show content after feedback when no results */}
           <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            {results ? (
-              <Card className="glass border-muted">
-                <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-                  <div className="mb-6 p-6 bg-secondary rounded-2xl border border-border">
-                    <Camera className="h-20 w-20 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">{t("results.readyTitle")}</h3>
-                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
-                    {t("results.readyDescription")}
-                  </p>
-                  <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
-                      <span className="text-primary">●</span>
-                      <span>{t("results.cropProtection")}</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
-                      <span className="text-accent">●</span>
-                      <span>{t("results.precisionDetection")}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="glass border-muted">
-                <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-                  <div className="mb-6 p-6 bg-secondary rounded-2xl border border-border">
-                    <Camera className="h-20 w-20 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">{t("results.readyTitle")}</h3>
-                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
-                    {t("results.readyDescription")}
-                  </p>
-                  <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
-                      <span className="text-primary">●</span>
-                      <span>{t("results.cropProtection")}</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
-                      <span className="text-accent">●</span>
-                      <span>{t("results.precisionDetection")}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {/* This column intentionally left for layout balance */}
           </div>
         </div>
 
@@ -371,6 +325,9 @@ const Index = () => {
               <FertilizerRecommendations fertilizers={results.fertilizers} />
             )}
 
+            {/* Nearby Shop Locator - After Fertilizer Recommendations */}
+            <NearbyShopLocator />
+
             {/* SMS Notification */}
             <SMSNotification detections={results.detections} />
 
@@ -386,6 +343,33 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8 relative z-10">
         <FeedbackSection />
       </div>
+
+      {/* Ready for Field Analysis - Shows after Feedback when no results */}
+      {!results && (
+        <div className="container mx-auto px-4 pb-8 relative z-10">
+          <Card className="glass border-muted max-w-2xl mx-auto">
+            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="mb-6 p-6 bg-secondary rounded-2xl border border-border">
+                <Camera className="h-16 w-16 text-muted-foreground" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">{t("results.readyTitle")}</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
+                {t("results.readyDescription")}
+              </p>
+              <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
+                  <span className="text-primary">●</span>
+                  <span>{t("results.cropProtection")}</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
+                  <span className="text-accent">●</span>
+                  <span>{t("results.precisionDetection")}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
       
       <SupportChat />
       
