@@ -291,23 +291,36 @@ const Index = () => {
 
             {/* Detection Results Table */}
             {results && (
+              <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
+                <CardHeader className="border-b border-border/50">
+                  <CardTitle className="flex items-center gap-3 text-xl">
+                    <div className="p-2 bg-accent/20 rounded-lg">
+                      <span className="text-xl">🔍</span>
+                    </div>
+                    {t("results.title")}
+                  </CardTitle>
+                  <CardDescription className="text-base">
+                    {t("results.detected")} {results.detections.length} {t("results.instances")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-8">
+                  <DetectionTable detections={results.detections} />
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Nearby Shop Locator */}
+            <NearbyShopLocator />
+
+            {/* Feedback Section */}
+            <FeedbackSection />
+          </div>
+
+          {/* Results Section */}
+          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            {results ? (
               <>
-                <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
-                  <CardHeader className="border-b border-border/50">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <div className="p-2 bg-accent/20 rounded-lg">
-                        <span className="text-xl">🔍</span>
-                      </div>
-                      {t("results.title")}
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      {t("results.detected")} {results.detections.length} {t("results.instances")}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-8">
-                    <DetectionTable detections={results.detections} />
-                  </CardContent>
-                </Card>
+                <ResultsDisplay results={results} />
                 
                 {/* Fertilizer Recommendations */}
                 {results.fertilizers && results.fertilizers.length > 0 && (
@@ -322,19 +335,6 @@ const Index = () => {
                   <WhatsAppShare detections={results.detections} />
                 </div>
               </>
-            )}
-
-            {/* Nearby Shop Locator */}
-            <NearbyShopLocator />
-
-            {/* Feedback Section */}
-            <FeedbackSection />
-          </div>
-
-          {/* Results Section */}
-          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            {results ? (
-              <ResultsDisplay results={results} />
             ) : (
               <Card className="glass border-muted">
                 <CardContent className="flex flex-col items-center justify-center py-20 text-center">
