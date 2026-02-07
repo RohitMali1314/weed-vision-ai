@@ -288,53 +288,34 @@ const Index = () => {
                 )}
               </CardContent>
             </Card>
-
-            {/* Detection Results Table */}
-            {results && (
-              <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
-                <CardHeader className="border-b border-border/50">
-                  <CardTitle className="flex items-center gap-3 text-xl">
-                    <div className="p-2 bg-accent/20 rounded-lg">
-                      <span className="text-xl">🔍</span>
-                    </div>
-                    {t("results.title")}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {t("results.detected")} {results.detections.length} {t("results.instances")}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-8">
-                  <DetectionTable detections={results.detections} />
-                </CardContent>
-              </Card>
-            )}
-
             {/* Nearby Shop Locator */}
             <NearbyShopLocator />
-
-            {/* Feedback Section */}
-            <FeedbackSection />
           </div>
 
           {/* Results Section */}
           <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             {results ? (
-              <>
-                <ResultsDisplay results={results} />
-                
-                {/* Fertilizer Recommendations */}
-                {results.fertilizers && results.fertilizers.length > 0 && (
-                  <FertilizerRecommendations fertilizers={results.fertilizers} />
-                )}
-
-                {/* SMS Notification */}
-                <SMSNotification detections={results.detections} />
-
-                {/* WhatsApp Share Button */}
-                <div className="flex justify-center">
-                  <WhatsAppShare detections={results.detections} />
-                </div>
-              </>
+              <Card className="glass border-muted">
+                <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="mb-6 p-6 bg-secondary rounded-2xl border border-border">
+                    <Camera className="h-20 w-20 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-foreground">{t("results.readyTitle")}</h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
+                    {t("results.readyDescription")}
+                  </p>
+                  <div className="mt-8 flex justify-center gap-6 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
+                      <span className="text-primary">●</span>
+                      <span>{t("results.cropProtection")}</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full">
+                      <span className="text-accent">●</span>
+                      <span>{t("results.precisionDetection")}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ) : (
               <Card className="glass border-muted">
                 <CardContent className="flex flex-col items-center justify-center py-20 text-center">
@@ -360,6 +341,50 @@ const Index = () => {
             )}
           </div>
         </div>
+
+        {/* Results Flow Section - Shows after detection */}
+        {results && (
+          <div className="mt-12 space-y-8">
+            {/* Detection Results Table */}
+            <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
+              <CardHeader className="border-b border-border/50">
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <div className="p-2 bg-accent/20 rounded-lg">
+                    <span className="text-xl">🔍</span>
+                  </div>
+                  {t("results.title")}
+                </CardTitle>
+                <CardDescription className="text-base">
+                  {t("results.detected")} {results.detections.length} {t("results.instances")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-8">
+                <DetectionTable detections={results.detections} />
+              </CardContent>
+            </Card>
+
+            {/* Field Analysis Results (Images) */}
+            <ResultsDisplay results={results} />
+            
+            {/* Fertilizer Recommendations */}
+            {results.fertilizers && results.fertilizers.length > 0 && (
+              <FertilizerRecommendations fertilizers={results.fertilizers} />
+            )}
+
+            {/* SMS Notification */}
+            <SMSNotification detections={results.detections} />
+
+            {/* WhatsApp Share Button */}
+            <div className="flex justify-center">
+              <WhatsAppShare detections={results.detections} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Feedback Section - At the bottom */}
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <FeedbackSection />
       </div>
       
       <SupportChat />
