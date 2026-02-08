@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
 
 export const FeedbackSection = () => {
   const { t } = useTranslation();
@@ -29,13 +30,27 @@ export const FeedbackSection = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call - in production, this would send to your backend
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    toast({
-      title: t("feedback.success", "Thank you!"),
-      description: t("feedback.successMessage", "Your message has been received"),
-    });
+    try {
+      const { error } = await supabase
+        .from('feedback')
+        .insert({ type, content });
+
+      if (error) throw error;
+      
+      toast({
+        title: t("feedback.success", "Thank you!"),
+        description: t("feedback.successMessage", "Your message has been received"),
+      });
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      toast({
+        title: t("feedback.error", "Error"),
+        description: t("feedback.submitError", "Failed to submit. Please try again."),
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
     
     setSubmitted(type);
     if (type === "suggestion") {
