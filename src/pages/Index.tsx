@@ -94,7 +94,7 @@ const Index = () => {
         // Direct call to Flask backend for local development
         const formData = new FormData();
         formData.append('file', selectedImage);
-        response = await fetch('http://127.0.0.1:5000/predict', {
+        response = await fetch('https://weed-yolo-backend-weed-yolo-backend.hf.space/predict', {
           method: 'POST',
           body: formData,
         });
