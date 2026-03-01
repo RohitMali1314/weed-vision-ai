@@ -8,6 +8,7 @@ import { FertilizerRecommendations } from "@/components/FertilizerRecommendation
 import { SupportChat } from "@/components/SupportChat";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { BackendStatus } from "@/components/BackendStatus";
 import { WhatsAppShare } from "@/components/WhatsAppShare";
 import { NearbyShopLocator } from "@/components/NearbyShopLocator";
 import { FeedbackSection } from "@/components/FeedbackSection";
@@ -155,6 +156,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-glow"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex justify-end items-center gap-3 mb-4">
+            <BackendStatus />
             <ThemeToggle />
             <LanguageSelector />
           </div>
