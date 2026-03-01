@@ -22,7 +22,7 @@ serve(async (req) => {
     }
 
     // Get Flask backend URL from environment or use default
-    const FLASK_BACKEND_URL = Deno.env.get('FLASK_BACKEND_URL') || 'http://127.0.0.1:5000';
+    const FLASK_BACKEND_URL = Deno.env.get('FLASK_BACKEND_URL') || 'https://weed-yolo-backend-weed-yolo-backend.hf.space';
 
     // Convert base64 to blob
     const base64Data = imageData.split(',')[1];
