@@ -43,7 +43,8 @@ export const WhatsAppShare = ({ detections, className }: WhatsAppShareProps) => 
     message += `📊 ${detectedLabel[lang] || detectedLabel.en}\n\n`;
 
     detections.forEach((detection, index) => {
-      message += `${index + 1}. *${detection.label}* (${(detection.confidence * 100).toFixed(1)}%)\n`;
+      const conf = detection.confidence > 1 ? detection.confidence : detection.confidence * 100;
+      message += `${index + 1}. *${detection.label}* (${Math.min(conf, 100).toFixed(1)}%)\n`;
       
       if (detection.fertilizer) {
         message += `   💊 ${fertilizerLabel[lang] || fertilizerLabel.en} ${detection.fertilizer}\n`;
