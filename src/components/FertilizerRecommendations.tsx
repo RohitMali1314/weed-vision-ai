@@ -150,33 +150,33 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                     {/* Buy Buttons */}
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-muted-foreground">Buy from trusted stores:</p>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <Button 
                           size="sm" 
                           variant="outline"
                           onClick={() => window.open(storeUrls.amazon, '_blank')}
-                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
                         >
-                          <ExternalLink className="h-3 w-3" />
-                          <span className="font-semibold">Amazon</span>
+                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                          <span className="font-semibold truncate">Amazon</span>
                         </Button>
                         <Button 
                           size="sm" 
                           variant="outline"
                           onClick={() => window.open(storeUrls.flipkart, '_blank')}
-                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
                         >
-                          <ExternalLink className="h-3 w-3" />
-                          <span className="font-semibold">Flipkart</span>
+                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                          <span className="font-semibold truncate">Flipkart</span>
                         </Button>
                         <Button 
                           size="sm" 
                           variant="outline"
                           onClick={() => window.open(storeUrls.bigbasket, '_blank')}
-                          className="gap-2 hover:bg-primary/10 hover:border-primary transition-all hover-scale"
+                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
                         >
-                          <ExternalLink className="h-3 w-3" />
-                          <span className="font-semibold">BigBasket</span>
+                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                          <span className="font-semibold truncate">BigBasket</span>
                         </Button>
                       </div>
                     </div>
