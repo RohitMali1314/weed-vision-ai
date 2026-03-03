@@ -307,8 +307,8 @@ const Index = () => {
             {/* Nearby Shop Locator - After Fertilizer Recommendations */}
             <NearbyShopLocator />
 
-            {/* SMS Notification */}
-            <SMSNotification detections={results.detections} />
+
+
 
             {/* WhatsApp Share Button */}
             <div className="flex justify-center">
