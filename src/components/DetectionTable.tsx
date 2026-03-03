@@ -72,8 +72,8 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Badge variant={getConfidenceVariant(detection.confidence)}>
-                      {detection.confidence.toFixed(1)}%
+                    <Badge variant={getConfidenceVariant(Math.min(detection.confidence, 100))}>
+                      {Math.min(detection.confidence, 100).toFixed(1)}%
                     </Badge>
                     <span className={`text-sm font-medium ${getConfidenceColor(detection.confidence)}`}>
                       {detection.confidence >= 90 ? "High" : 
