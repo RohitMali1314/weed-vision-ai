@@ -12,7 +12,7 @@ import { BackendStatus } from "@/components/BackendStatus";
 import { WhatsAppShare } from "@/components/WhatsAppShare";
 import { NearbyShopLocator } from "@/components/NearbyShopLocator";
 import { FeedbackSection } from "@/components/FeedbackSection";
-import { SMSNotification } from "@/components/SMSNotification";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -307,8 +307,8 @@ const Index = () => {
             {/* Nearby Shop Locator - After Fertilizer Recommendations */}
             <NearbyShopLocator />
 
-            {/* SMS Notification */}
-            <SMSNotification detections={results.detections} />
+
+
 
             {/* WhatsApp Share Button */}
             <div className="flex justify-center">
