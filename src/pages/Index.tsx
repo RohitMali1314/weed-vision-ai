@@ -52,6 +52,7 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingTime, setProcessingTime] = useState(0);
   const [results, setResults] = useState<PredictionResult | null>(null);
+  const [scanCount, setScanCount] = useState(0);
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -138,6 +139,7 @@ const Index = () => {
           avg_confidence: Math.round(avgConf * 100) / 100,
           result_image_url: result.result_image_url,
         });
+        setScanCount(prev => prev + 1);
       } catch (e) {
         console.error("Failed to save scan history:", e);
       }
@@ -216,7 +218,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Dashboard Stats */}
         <div className="mb-10">
-          <DashboardStats />
+          <DashboardStats key={`stats-${scanCount}`} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -308,7 +310,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <ScanHistory />
+            <ScanHistory key={`history-${scanCount}`} />
           </motion.div>
         </div>
 
