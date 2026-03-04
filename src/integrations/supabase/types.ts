@@ -35,6 +35,42 @@ export type Database = {
         }
         Relationships: []
       }
+      scan_history: {
+        Row: {
+          avg_confidence: number | null
+          created_at: string
+          detection_count: number
+          detections: Json
+          device_id: string
+          fertilizers: Json | null
+          id: string
+          image_preview: string | null
+          result_image_url: string | null
+        }
+        Insert: {
+          avg_confidence?: number | null
+          created_at?: string
+          detection_count?: number
+          detections?: Json
+          device_id: string
+          fertilizers?: Json | null
+          id?: string
+          image_preview?: string | null
+          result_image_url?: string | null
+        }
+        Update: {
+          avg_confidence?: number | null
+          created_at?: string
+          detection_count?: number
+          detections?: Json
+          device_id?: string
+          fertilizers?: Json | null
+          id?: string
+          image_preview?: string | null
+          result_image_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

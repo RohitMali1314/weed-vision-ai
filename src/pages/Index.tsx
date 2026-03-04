@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Camera, Upload, Loader2, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -12,6 +13,10 @@ import { BackendStatus } from "@/components/BackendStatus";
 import { WhatsAppShare } from "@/components/WhatsAppShare";
 import { NearbyShopLocator } from "@/components/NearbyShopLocator";
 import { FeedbackSection } from "@/components/FeedbackSection";
+import { DashboardStats } from "@/components/DashboardStats";
+import { ScanHistory } from "@/components/ScanHistory";
+import { supabase } from "@/integrations/supabase/client";
+import { getDeviceId } from "@/lib/deviceId";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -119,7 +124,24 @@ const Index = () => {
       
       result.fertilizers = uniqueFertilizers;
       setResults(result);
-      
+
+      // Save to scan history
+      try {
+        const avgConf = result.detections.length > 0
+          ? result.detections.reduce((a, d) => a + Math.min(d.confidence, 100), 0) / result.detections.length
+          : 0;
+        await supabase.from("scan_history").insert({
+          device_id: getDeviceId(),
+          detections: result.detections as any,
+          fertilizers: (result.fertilizers || []) as any,
+          detection_count: result.detections.length,
+          avg_confidence: Math.round(avgConf * 100) / 100,
+          result_image_url: result.result_image_url,
+        });
+      } catch (e) {
+        console.error("Failed to save scan history:", e);
+      }
+
       toast({
         title: t("toast.complete"),
         description: `${t("toast.found")} ${result.detections.length} ${t("toast.detections")}`,
@@ -192,9 +214,19 @@ const Index = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
+        {/* Dashboard Stats */}
+        <div className="mb-10">
+          <DashboardStats />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Upload Section with modern styling */}
-          <div className="space-y-8 animate-slide-up">
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Card className="glass shadow-glow border-primary/20 hover:border-primary/40 transition-all duration-300">
               <CardHeader className="border-b border-border/50">
                 <CardTitle className="flex items-center gap-3 text-2xl">
@@ -267,17 +299,27 @@ const Index = () => {
                 )}
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
-          {/* Empty placeholder - will show content after feedback when no results */}
-          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            {/* This column intentionally left for layout balance */}
-          </div>
+          {/* Scan History - right column */}
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <ScanHistory />
+          </motion.div>
         </div>
 
         {/* Results Flow Section - Shows after detection */}
         {results && (
-          <div className="mt-12 space-y-8">
+          <motion.div
+            className="mt-12 space-y-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Detection Results Table */}
             <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
               <CardHeader className="border-b border-border/50">
@@ -314,7 +356,7 @@ const Index = () => {
             <div className="flex justify-center">
               <WhatsAppShare detections={results.detections} />
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
