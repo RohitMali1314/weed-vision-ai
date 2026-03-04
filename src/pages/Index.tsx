@@ -124,7 +124,24 @@ const Index = () => {
       
       result.fertilizers = uniqueFertilizers;
       setResults(result);
-      
+
+      // Save to scan history
+      try {
+        const avgConf = result.detections.length > 0
+          ? result.detections.reduce((a, d) => a + Math.min(d.confidence, 100), 0) / result.detections.length
+          : 0;
+        await supabase.from("scan_history").insert({
+          device_id: getDeviceId(),
+          detections: result.detections as any,
+          fertilizers: (result.fertilizers || []) as any,
+          detection_count: result.detections.length,
+          avg_confidence: Math.round(avgConf * 100) / 100,
+          result_image_url: result.result_image_url,
+        });
+      } catch (e) {
+        console.error("Failed to save scan history:", e);
+      }
+
       toast({
         title: t("toast.complete"),
         description: `${t("toast.found")} ${result.detections.length} ${t("toast.detections")}`,
