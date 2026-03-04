@@ -314,7 +314,12 @@ const Index = () => {
 
         {/* Results Flow Section - Shows after detection */}
         {results && (
-          <div className="mt-12 space-y-8">
+          <motion.div
+            className="mt-12 space-y-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Detection Results Table */}
             <Card className="glass border-accent/30 hover:border-accent/50 transition-all duration-300 animate-grow">
               <CardHeader className="border-b border-border/50">
