@@ -356,7 +356,7 @@ const Index = () => {
             <div className="flex justify-center">
               <WhatsAppShare detections={results.detections} />
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
