@@ -52,6 +52,7 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingTime, setProcessingTime] = useState(0);
   const [results, setResults] = useState<PredictionResult | null>(null);
+  const [scanCount, setScanCount] = useState(0);
   const { toast } = useToast();
   const { t } = useTranslation();
 
