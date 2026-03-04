@@ -299,12 +299,17 @@ const Index = () => {
                 )}
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
-          {/* Empty placeholder - will show content after feedback when no results */}
-          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            {/* This column intentionally left for layout balance */}
-          </div>
+          {/* Scan History - right column */}
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <ScanHistory />
+          </motion.div>
         </div>
 
         {/* Results Flow Section - Shows after detection */}
