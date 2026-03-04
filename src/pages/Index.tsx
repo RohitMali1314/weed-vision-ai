@@ -139,6 +139,7 @@ const Index = () => {
           avg_confidence: Math.round(avgConf * 100) / 100,
           result_image_url: result.result_image_url,
         });
+        setScanCount(prev => prev + 1);
       } catch (e) {
         console.error("Failed to save scan history:", e);
       }
