@@ -214,9 +214,19 @@ const Index = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
+        {/* Dashboard Stats */}
+        <div className="mb-10">
+          <DashboardStats />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Upload Section with modern styling */}
-          <div className="space-y-8 animate-slide-up">
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Card className="glass shadow-glow border-primary/20 hover:border-primary/40 transition-all duration-300">
               <CardHeader className="border-b border-border/50">
                 <CardTitle className="flex items-center gap-3 text-2xl">
