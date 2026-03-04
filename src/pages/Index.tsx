@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Camera, Upload, Loader2, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -12,6 +13,10 @@ import { BackendStatus } from "@/components/BackendStatus";
 import { WhatsAppShare } from "@/components/WhatsAppShare";
 import { NearbyShopLocator } from "@/components/NearbyShopLocator";
 import { FeedbackSection } from "@/components/FeedbackSection";
+import { DashboardStats } from "@/components/DashboardStats";
+import { ScanHistory } from "@/components/ScanHistory";
+import { supabase } from "@/integrations/supabase/client";
+import { getDeviceId } from "@/lib/deviceId";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
