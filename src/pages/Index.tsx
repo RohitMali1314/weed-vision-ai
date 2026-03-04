@@ -218,7 +218,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Dashboard Stats */}
         <div className="mb-10">
-          <DashboardStats />
+          <DashboardStats key={`stats-${scanCount}`} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
