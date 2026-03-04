@@ -310,7 +310,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <ScanHistory />
+            <ScanHistory key={`history-${scanCount}`} />
           </motion.div>
         </div>
 
