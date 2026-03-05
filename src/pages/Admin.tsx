@@ -16,7 +16,18 @@ interface FeedbackItem {
 const Admin = () => {
   const [feedbackList, setFeedbackList] = useState<FeedbackItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate('/');
+      } else {
+        setIsAuthenticated(true);
+      }
+    });
+  }, [navigate]);
 
   const fetchFeedback = async () => {
     setIsLoading(true);
@@ -34,8 +45,14 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    fetchFeedback();
-  }, []);
+    if (isAuthenticated) {
+      fetchFeedback();
+    }
+  }, [isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
