@@ -63,7 +63,8 @@ const getStoreUrls = (fertilizerName: string) => {
 };
 
 export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendationsProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   if (!fertilizers || fertilizers.length === 0) {
     return null;
