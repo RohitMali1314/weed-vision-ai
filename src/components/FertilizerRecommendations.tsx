@@ -127,7 +127,7 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                       <div className="space-y-1">
                         <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.quantity")}</p>
                         <Badge variant="outline" className="bg-crop/10 border-crop">
-                          {convertToIndianUnits(fertilizer.quantity)}
+                          {displayQuantity}
                         </Badge>
                       </div>
                       <div className="space-y-1">
