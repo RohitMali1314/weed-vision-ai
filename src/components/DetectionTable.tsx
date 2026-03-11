@@ -89,7 +89,9 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                 <TableCell>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="text-base">🧪</span>
-                    <span>{detection.fertilizer ? normalizeText(detection.fertilizer) : 'N/A'}</span>
+                    <span>{detection.fertilizer 
+                      ? (getTranslatedFertilizer(detection.label, currentLang)?.name || normalizeText(detection.fertilizer)) 
+                      : 'N/A'}</span>
                   </div>
                 </TableCell>
                 {hasBoundingBoxes && (
