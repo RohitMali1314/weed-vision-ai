@@ -26,7 +26,8 @@ interface DetectionTableProps {
 }
 
 export const DetectionTable = ({ detections }: DetectionTableProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   const getConfidenceVariant = (confidence: number) => {
     if (confidence >= 90) return "default";
