@@ -32,12 +32,30 @@
     "cropProtection": "Crop Protection",
     "precisionDetection": "Precision Detection",
     "originalImage": "Original Field Image",
-    "detectionResults": "Weed Detection Results"
+    "detectionResults": "Weed Detection Results",
+    "analysisResults": "Analysis Results",
+    "analysisDescription": "Processed image with detected weeds and bounding boxes",
+    "totalDetections": "Total Detections",
+    "avgConfidence": "Avg. Confidence",
+    "downloadProcessed": "Download Processed Image",
+    "downloadStarted": "Download started",
+    "downloadStartedDesc": "The processed image is being downloaded",
+    "downloadFailed": "Download failed",
+    "downloadFailedDesc": "Failed to download the processed image"
   },
   "detection": {
     "weedType": "Weed Type",
     "confidence": "Confidence",
-    "location": "Location"
+    "location": "Location",
+    "label": "Label",
+    "fertilizerCol": "Fertilizer",
+    "boundingBox": "Bounding Box",
+    "noWeeds": "No weeds detected in this image",
+    "totalDetections": "Total detections",
+    "highestConfidence": "Highest confidence",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
   },
   "fertilizer": {
     "title": "Fertilizer Recommendations",
@@ -46,7 +64,9 @@
     "quantity": "Quantity",
     "frequency": "Application Frequency",
     "forWeed": "For Weed Type",
-    "findOnline": "Find Online"
+    "findOnline": "Find Online",
+    "buyFrom": "Buy from trusted stores:",
+    "descriptionFull": "Recommended fertilizers for optimal crop health and weed management"
   },
   "toast": {
     "noImage": "No image selected",

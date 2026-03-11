@@ -32,12 +32,30 @@
     "cropProtection": "फसल सुरक्षा",
     "precisionDetection": "सटीक पहचान",
     "originalImage": "मूल खेत की छवि",
-    "detectionResults": "खरपतवार पहचान परिणाम"
+    "detectionResults": "खरपतवार पहचान परिणाम",
+    "analysisResults": "विश्लेषण परिणाम",
+    "analysisDescription": "पहचाने गए खरपतवारों और बाउंडिंग बॉक्स के साथ प्रोसेस की गई छवि",
+    "totalDetections": "कुल पहचान",
+    "avgConfidence": "औसत विश्वास",
+    "downloadProcessed": "प्रोसेस की गई छवि डाउनलोड करें",
+    "downloadStarted": "डाउनलोड शुरू हुआ",
+    "downloadStartedDesc": "प्रोसेस की गई छवि डाउनलोड हो रही है",
+    "downloadFailed": "डाउनलोड विफल",
+    "downloadFailedDesc": "प्रोसेस की गई छवि डाउनलोड करने में विफल"
   },
   "detection": {
     "weedType": "खरपतवार का प्रकार",
     "confidence": "विश्वास स्तर",
-    "location": "स्थान"
+    "location": "स्थान",
+    "label": "लेबल",
+    "fertilizerCol": "उर्वरक",
+    "boundingBox": "बाउंडिंग बॉक्स",
+    "noWeeds": "इस छवि में कोई खरपतवार नहीं पाया गया",
+    "totalDetections": "कुल पहचान",
+    "highestConfidence": "उच्चतम विश्वास",
+    "high": "उच्च",
+    "medium": "मध्यम",
+    "low": "कम"
   },
   "fertilizer": {
     "title": "उर्वरक सिफारिशें",
@@ -46,7 +64,9 @@
     "quantity": "मात्रा",
     "frequency": "आवेदन आवृत्ति",
     "forWeed": "खरपतवार के प्रकार के लिए",
-    "findOnline": "ऑनलाइन खोजें"
+    "findOnline": "ऑनलाइन खोजें",
+    "buyFrom": "विश्वसनीय दुकानों से खरीदें:",
+    "descriptionFull": "इष्टतम फसल स्वास्थ्य और खरपतवार प्रबंधन के लिए अनुशंसित उर्वरक"
   },
   "toast": {
     "noImage": "कोई छवि नहीं चुनी गई",
