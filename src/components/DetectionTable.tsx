@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Detection } from "@/pages/Index";
 import { useTranslation } from "react-i18next";
+import { getTranslatedFertilizer } from "@/lib/fertilizerTranslations";
 
 // Normalize text by replacing all types of dashes with simple ASCII hyphen
 const normalizeText = (text: string): string => {
