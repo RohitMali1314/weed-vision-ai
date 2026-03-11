@@ -134,7 +134,7 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                         <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.frequency")}</p>
                         <div className="flex items-center gap-2">
                           <span className="text-sm">📅</span>
-                          <span className="text-sm font-medium">{normalizeText(fertilizer.frequency)}</span>
+                          <span className="text-sm font-medium">{displayFrequency}</span>
                         </div>
                       </div>
                     </div>
