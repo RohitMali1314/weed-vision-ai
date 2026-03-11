@@ -8,15 +8,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Detection } from "@/pages/Index";
+import { useTranslation } from "react-i18next";
 
 // Normalize text by replacing all types of dashes with simple ASCII hyphen
 const normalizeText = (text: string): string => {
   return text
-    .replace(/â€"/g, '-')  // Replace garbled en-dash
-    .replace(/–/g, '-')    // Replace en-dash
-    .replace(/—/g, '-')    // Replace em-dash
-    .replace(/\u2013/g, '-') // Replace Unicode en-dash
-    .replace(/\u2014/g, '-'); // Replace Unicode em-dash
+    .replace(/â€"/g, '-')
+    .replace(/–/g, '-')
+    .replace(/—/g, '-')
+    .replace(/\u2013/g, '-')
+    .replace(/\u2014/g, '-');
 };
 
 interface DetectionTableProps {
@@ -24,6 +25,8 @@ interface DetectionTableProps {
 }
 
 export const DetectionTable = ({ detections }: DetectionTableProps) => {
+  const { t } = useTranslation();
+
   const getConfidenceVariant = (confidence: number) => {
     if (confidence >= 90) return "default";
     if (confidence >= 75) return "secondary";
@@ -39,7 +42,7 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
   if (detections.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No weeds detected in this image
+        {t("detection.noWeeds")}
       </div>
     );
   }
@@ -53,10 +56,10 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">#</TableHead>
-              <TableHead>Label</TableHead>
-              <TableHead>Confidence</TableHead>
-              <TableHead>Fertilizer</TableHead>
-              {hasBoundingBoxes && <TableHead className="text-right">Bounding Box</TableHead>}
+              <TableHead>{t("detection.label")}</TableHead>
+              <TableHead>{t("detection.confidence")}</TableHead>
+              <TableHead>{t("detection.fertilizerCol")}</TableHead>
+              {hasBoundingBoxes && <TableHead className="text-right">{t("detection.boundingBox")}</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,8 +79,8 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
                       {Math.min(detection.confidence, 100).toFixed(1)}%
                     </Badge>
                     <span className={`text-sm font-medium ${getConfidenceColor(detection.confidence)}`}>
-                      {detection.confidence >= 90 ? "High" : 
-                       detection.confidence >= 75 ? "Medium" : "Low"}
+                      {detection.confidence >= 90 ? t("detection.high") : 
+                       detection.confidence >= 75 ? t("detection.medium") : t("detection.low")}
                     </span>
                   </div>
                 </TableCell>
@@ -101,10 +104,10 @@ export const DetectionTable = ({ detections }: DetectionTableProps) => {
       {/* Summary */}
       <div className="flex justify-between items-center p-3 bg-secondary/30 rounded-lg text-sm">
         <span className="text-muted-foreground">
-          Total detections: <strong>{detections.length}</strong>
+          {t("detection.totalDetections")}: <strong>{detections.length}</strong>
         </span>
         <span className="text-muted-foreground">
-          Highest confidence: <strong className="text-success">
+          {t("detection.highestConfidence")}: <strong className="text-success">
             {Math.max(...detections.map(d => d.confidence)).toFixed(1)}%
           </strong>
         </span>

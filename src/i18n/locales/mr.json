@@ -32,12 +32,30 @@
     "cropProtection": "पीक संरक्षण",
     "precisionDetection": "अचूक शोध",
     "originalImage": "मूळ शेत प्रतिमा",
-    "detectionResults": "तण शोध परिणाम"
+    "detectionResults": "तण शोध परिणाम",
+    "analysisResults": "विश्लेषण परिणाम",
+    "analysisDescription": "ओळखलेले तण आणि बाउंडिंग बॉक्ससह प्रक्रिया केलेली प्रतिमा",
+    "totalDetections": "एकूण शोध",
+    "avgConfidence": "सरासरी विश्वास",
+    "downloadProcessed": "प्रक्रिया केलेली प्रतिमा डाउनलोड करा",
+    "downloadStarted": "डाउनलोड सुरू झाले",
+    "downloadStartedDesc": "प्रक्रिया केलेली प्रतिमा डाउनलोड होत आहे",
+    "downloadFailed": "डाउनलोड अयशस्वी",
+    "downloadFailedDesc": "प्रक्रिया केलेली प्रतिमा डाउनलोड करण्यात अयशस्वी"
   },
   "detection": {
     "weedType": "तणाचा प्रकार",
     "confidence": "विश्वास पातळी",
-    "location": "स्थान"
+    "location": "स्थान",
+    "label": "लेबल",
+    "fertilizerCol": "खत",
+    "boundingBox": "बाउंडिंग बॉक्स",
+    "noWeeds": "या प्रतिमेत कोणतेही तण आढळले नाही",
+    "totalDetections": "एकूण शोध",
+    "highestConfidence": "उच्चतम विश्वास",
+    "high": "उच्च",
+    "medium": "मध्यम",
+    "low": "कमी"
   },
   "fertilizer": {
     "title": "खत शिफारसी",
@@ -46,7 +64,9 @@
     "quantity": "प्रमाण",
     "frequency": "वापर वारंवारता",
     "forWeed": "तणाच्या प्रकारासाठी",
-    "findOnline": "ऑनलाइन शोधा"
+    "findOnline": "ऑनलाइन शोधा",
+    "buyFrom": "विश्वासार्ह दुकानांमधून खरेदी करा:",
+    "descriptionFull": "इष्टतम पीक आरोग्य आणि तण व्यवस्थापनासाठी शिफारस केलेले खत"
   },
   "toast": {
     "noImage": "कोणतीही प्रतिमा निवडलेली नाही",
