@@ -107,7 +107,8 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                           </div>
                           <div>
                             <h3 className="font-bold text-lg text-foreground">
-                              {normalizeText(fertilizer.name)}
+                              {displayName}
+                            </h3>
                             </h3>
                             {fertilizer.type && (
                               <Badge variant="secondary" className="bg-soil/10 mt-1">
