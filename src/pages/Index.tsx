@@ -58,7 +58,7 @@ const Index = () => {
 
   // Track processing time for cold start warning
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isProcessing) {
       setProcessingTime(0);
       interval = setInterval(() => {
