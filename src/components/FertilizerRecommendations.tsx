@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { getTranslatedFertilizer } from "@/lib/fertilizerTranslations";
 
 export interface FertilizerData {
   name: string;
@@ -62,7 +63,8 @@ const getStoreUrls = (fertilizerName: string) => {
 };
 
 export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendationsProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   if (!fertilizers || fertilizers.length === 0) {
     return null;
@@ -85,6 +87,13 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
         <div className="space-y-6">
           {fertilizers.map((fertilizer, index) => {
             const storeUrls = getStoreUrls(fertilizer.name);
+            // Look up translation by type (weed label) or fall back to original
+            const translated = fertilizer.type 
+              ? getTranslatedFertilizer(fertilizer.type, currentLang) 
+              : null;
+            const displayName = translated?.name || normalizeText(fertilizer.name);
+            const displayQuantity = translated?.quantity || convertToIndianUnits(fertilizer.quantity);
+            const displayFrequency = translated?.frequency || normalizeText(fertilizer.frequency);
             
             return (
               <Card key={index} className="border-2 border-wheat/30 hover:border-crop/50 transition-all duration-300 hover:shadow-crop animate-fade-in">
@@ -98,7 +107,7 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                           </div>
                           <div>
                             <h3 className="font-bold text-lg text-foreground">
-                              {normalizeText(fertilizer.name)}
+                              {displayName}
                             </h3>
                             {fertilizer.type && (
                               <Badge variant="secondary" className="bg-soil/10 mt-1">
@@ -117,14 +126,14 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                       <div className="space-y-1">
                         <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.quantity")}</p>
                         <Badge variant="outline" className="bg-crop/10 border-crop">
-                          {convertToIndianUnits(fertilizer.quantity)}
+                          {displayQuantity}
                         </Badge>
                       </div>
                       <div className="space-y-1">
                         <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.frequency")}</p>
                         <div className="flex items-center gap-2">
                           <span className="text-sm">📅</span>
-                          <span className="text-sm font-medium">{normalizeText(fertilizer.frequency)}</span>
+                          <span className="text-sm font-medium">{displayFrequency}</span>
                         </div>
                       </div>
                     </div>
