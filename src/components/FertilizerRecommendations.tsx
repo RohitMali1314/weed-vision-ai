@@ -87,6 +87,13 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
         <div className="space-y-6">
           {fertilizers.map((fertilizer, index) => {
             const storeUrls = getStoreUrls(fertilizer.name);
+            // Look up translation by type (weed label) or fall back to original
+            const translated = fertilizer.type 
+              ? getTranslatedFertilizer(fertilizer.type, currentLang) 
+              : null;
+            const displayName = translated?.name || normalizeText(fertilizer.name);
+            const displayQuantity = translated?.quantity || convertToIndianUnits(fertilizer.quantity);
+            const displayFrequency = translated?.frequency || normalizeText(fertilizer.frequency);
             
             return (
               <Card key={index} className="border-2 border-wheat/30 hover:border-crop/50 transition-all duration-300 hover:shadow-crop animate-fade-in">
