@@ -100,9 +100,9 @@ export const NearbyShopLocator = () => {
           console.error("Error fetching shops:", error);
           // Fallback to Google Maps search
           setShops([{
-            name: t("shop.searchGoogle", "Google Maps पर खोजें"),
+            name: t("shop.searchGoogle"),
             distance: "-",
-            address: t("shop.fertilizerNearby", "आसपास खाद/बीज की दुकानें"),
+            address: t("shop.fertilizerNearby"),
             mapsUrl: `https://www.google.com/maps/search/fertilizer+krishi+shop/@${latitude},${longitude},14z`,
           }]);
         } finally {
