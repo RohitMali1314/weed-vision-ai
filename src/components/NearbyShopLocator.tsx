@@ -113,16 +113,16 @@ export const NearbyShopLocator = () => {
         setIsLoading(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setLocationError(t("location.denied", "कृपया लोकेशन की अनुमति दें"));
+            setLocationError(t("location.denied"));
             break;
           case error.POSITION_UNAVAILABLE:
-            setLocationError(t("location.unavailable", "लोकेशन उपलब्ध नहीं है"));
+            setLocationError(t("location.unavailable"));
             break;
           case error.TIMEOUT:
-            setLocationError(t("location.timeout", "लोकेशन टाइमआउट"));
+            setLocationError(t("location.timeout"));
             break;
           default:
-            setLocationError(t("location.error", "लोकेशन में त्रुटि"));
+            setLocationError(t("location.error"));
         }
       },
       {
