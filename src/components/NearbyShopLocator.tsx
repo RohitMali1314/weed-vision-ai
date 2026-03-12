@@ -25,7 +25,7 @@ export const NearbyShopLocator = () => {
     setShops([]);
 
     if (!navigator.geolocation) {
-      setLocationError(t("location.notSupported", "आपका ब्राउज़र लोकेशन सपोर्ट नहीं करता"));
+      setLocationError(t("location.notSupported"));
       setIsLoading(false);
       return;
     }
