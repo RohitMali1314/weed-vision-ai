@@ -70,9 +70,9 @@ export const NearbyShopLocator = () => {
             const distance = calculateDistance(latitude, longitude, lat, lon);
             
             return {
-              name: element.tags?.name || t("shop.unnamed", "कृषि दुकान"),
+              name: element.tags?.name || t("shop.unnamed"),
               distance: `${distance.toFixed(1)} km`,
-              address: element.tags?.["addr:street"] || element.tags?.["addr:city"] || t("shop.nearYou", "आपके पास"),
+              address: element.tags?.["addr:street"] || element.tags?.["addr:city"] || t("shop.nearYou"),
               mapsUrl: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,
             };
           });
