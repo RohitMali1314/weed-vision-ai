@@ -171,7 +171,7 @@ export const NearbyShopLocator = () => {
           {isLoading ? (
             <>
               <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-              {t("shop.searching", "खोज रहे हैं...")}
+              {t("shop.searching")}
             </>
           ) : (
             <>
