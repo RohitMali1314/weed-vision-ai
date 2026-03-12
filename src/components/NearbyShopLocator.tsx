@@ -93,8 +93,8 @@ export const NearbyShopLocator = () => {
           }
 
           toast({
-            title: t("location.found", "दुकानें मिलीं!"),
-            description: `${processedShops.length || 1} ${t("shop.foundNearby", "दुकानें आपके पास")}`,
+            title: t("location.found"),
+            description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
           });
         } catch (error) {
           console.error("Error fetching shops:", error);
