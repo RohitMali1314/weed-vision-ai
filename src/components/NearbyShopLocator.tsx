@@ -176,7 +176,7 @@ export const NearbyShopLocator = () => {
           ) : (
             <>
               <Navigation className="h-5 w-5 mr-2" />
-              {t("shop.findNearby", "पास की दुकानें खोजें")}
+              {t("shop.findNearby")}
             </>
           )}
         </Button>
