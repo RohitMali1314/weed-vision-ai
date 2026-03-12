@@ -143,6 +143,25 @@
     "header": "🌱 Weed Detection Results:\n",
     "footer": "\n\n🚜 Weed Vision AI - Kisan ka Saathi"
   },
+  "shop": {
+    "title": "Nearby Fertilizer Shops",
+    "description": "Find agricultural shops near you using GPS",
+    "findNearby": "Find Nearby Shops",
+    "searching": "Searching...",
+    "unnamed": "Agricultural Shop",
+    "nearYou": "Near you",
+    "searchGoogle": "Search on Google Maps",
+    "fertilizerNearby": "Fertilizer/seed shops nearby",
+    "foundNearby": "shops found nearby"
+  },
+  "location": {
+    "found": "Shops found!",
+    "notSupported": "Your browser does not support location",
+    "denied": "Please allow location permission",
+    "unavailable": "Location not available",
+    "timeout": "Location timeout",
+    "error": "Location error"
+  },
   "footer": {
     "developedBy": "Developed By",
     "tagline": "🌾 Empowering farmers with AI-powered precision agriculture"

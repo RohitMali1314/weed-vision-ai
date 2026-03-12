@@ -25,7 +25,7 @@ export const NearbyShopLocator = () => {
     setShops([]);
 
     if (!navigator.geolocation) {
-      setLocationError(t("location.notSupported", "आपका ब्राउज़र लोकेशन सपोर्ट नहीं करता"));
+      setLocationError(t("location.notSupported"));
       setIsLoading(false);
       return;
     }
@@ -70,9 +70,9 @@ export const NearbyShopLocator = () => {
             const distance = calculateDistance(latitude, longitude, lat, lon);
             
             return {
-              name: element.tags?.name || t("shop.unnamed", "कृषि दुकान"),
+              name: element.tags?.name || t("shop.unnamed"),
               distance: `${distance.toFixed(1)} km`,
-              address: element.tags?.["addr:street"] || element.tags?.["addr:city"] || t("shop.nearYou", "आपके पास"),
+              address: element.tags?.["addr:street"] || element.tags?.["addr:city"] || t("shop.nearYou"),
               mapsUrl: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,
             };
           });
@@ -83,9 +83,9 @@ export const NearbyShopLocator = () => {
           if (processedShops.length === 0) {
             // If no results from Overpass, provide Google Maps search link
             setShops([{
-              name: t("shop.searchGoogle", "Google Maps पर खोजें"),
+              name: t("shop.searchGoogle"),
               distance: "-",
-              address: t("shop.fertilizerNearby", "आसपास खाद/बीज की दुकानें"),
+              address: t("shop.fertilizerNearby"),
               mapsUrl: `https://www.google.com/maps/search/fertilizer+shop/@${latitude},${longitude},14z`,
             }]);
           } else {
@@ -93,16 +93,16 @@ export const NearbyShopLocator = () => {
           }
 
           toast({
-            title: t("location.found", "दुकानें मिलीं!"),
-            description: `${processedShops.length || 1} ${t("shop.foundNearby", "दुकानें आपके पास")}`,
+            title: t("location.found"),
+            description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
           });
         } catch (error) {
           console.error("Error fetching shops:", error);
           // Fallback to Google Maps search
           setShops([{
-            name: t("shop.searchGoogle", "Google Maps पर खोजें"),
+            name: t("shop.searchGoogle"),
             distance: "-",
-            address: t("shop.fertilizerNearby", "आसपास खाद/बीज की दुकानें"),
+            address: t("shop.fertilizerNearby"),
             mapsUrl: `https://www.google.com/maps/search/fertilizer+krishi+shop/@${latitude},${longitude},14z`,
           }]);
         } finally {
@@ -113,16 +113,16 @@ export const NearbyShopLocator = () => {
         setIsLoading(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setLocationError(t("location.denied", "कृपया लोकेशन की अनुमति दें"));
+            setLocationError(t("location.denied"));
             break;
           case error.POSITION_UNAVAILABLE:
-            setLocationError(t("location.unavailable", "लोकेशन उपलब्ध नहीं है"));
+            setLocationError(t("location.unavailable"));
             break;
           case error.TIMEOUT:
-            setLocationError(t("location.timeout", "लोकेशन टाइमआउट"));
+            setLocationError(t("location.timeout"));
             break;
           default:
-            setLocationError(t("location.error", "लोकेशन में त्रुटि"));
+            setLocationError(t("location.error"));
         }
       },
       {
@@ -155,10 +155,10 @@ export const NearbyShopLocator = () => {
           <div className="p-2 bg-primary/20 rounded-lg">
             <Store className="h-5 w-5 text-primary" />
           </div>
-          {t("shop.title", "पास की खाद दुकानें")}
+          {t("shop.title")}
         </CardTitle>
         <CardDescription>
-          {t("shop.description", "GPS से अपने पास की कृषि दुकानें खोजें")}
+          {t("shop.description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -171,12 +171,12 @@ export const NearbyShopLocator = () => {
           {isLoading ? (
             <>
               <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-              {t("shop.searching", "खोज रहे हैं...")}
+              {t("shop.searching")}
             </>
           ) : (
             <>
               <Navigation className="h-5 w-5 mr-2" />
-              {t("shop.findNearby", "पास की दुकानें खोजें")}
+              {t("shop.findNearby")}
             </>
           )}
         </Button>
