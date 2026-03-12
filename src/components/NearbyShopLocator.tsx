@@ -155,10 +155,10 @@ export const NearbyShopLocator = () => {
           <div className="p-2 bg-primary/20 rounded-lg">
             <Store className="h-5 w-5 text-primary" />
           </div>
-          {t("shop.title", "पास की खाद दुकानें")}
+          {t("shop.title")}
         </CardTitle>
         <CardDescription>
-          {t("shop.description", "GPS से अपने पास की कृषि दुकानें खोजें")}
+          {t("shop.description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
