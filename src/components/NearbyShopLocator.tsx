@@ -83,9 +83,9 @@ export const NearbyShopLocator = () => {
           if (processedShops.length === 0) {
             // If no results from Overpass, provide Google Maps search link
             setShops([{
-              name: t("shop.searchGoogle", "Google Maps पर खोजें"),
+              name: t("shop.searchGoogle"),
               distance: "-",
-              address: t("shop.fertilizerNearby", "आसपास खाद/बीज की दुकानें"),
+              address: t("shop.fertilizerNearby"),
               mapsUrl: `https://www.google.com/maps/search/fertilizer+shop/@${latitude},${longitude},14z`,
             }]);
           } else {
