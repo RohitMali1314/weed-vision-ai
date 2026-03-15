@@ -36,26 +36,28 @@ export const NearbyShopLocator = () => {
         
         // Search for fertilizer shops using OpenStreetMap Nominatim
         try {
-          // Search for fertilizer/agricultural shops nearby
-          const searchTerms = ["fertilizer", "agricultural", "krishi", "khad", "seeds"];
           const radius = 5000; // 5km radius
           
-          // Use Overpass API for better results
+          // Simplified Overpass query - removed slow 'way' queries
           const query = `
-            [out:json][timeout:25];
+            [out:json][timeout:60];
             (
               node["shop"="agrarian"](around:${radius},${latitude},${longitude});
               node["shop"="farm"](around:${radius},${latitude},${longitude});
               node["name"~"fertilizer|krishi|khad|seeds|agricultural",i](around:${radius},${latitude},${longitude});
-              way["shop"="agrarian"](around:${radius},${latitude},${longitude});
-              way["shop"="farm"](around:${radius},${latitude},${longitude});
             );
-            out center;
+            out body;
           `;
 
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s client timeout
+
           const response = await fetch(
-            `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`
+            `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
+            { signal: controller.signal }
           );
+          
+          clearTimeout(timeoutId);
 
           if (!response.ok) {
             throw new Error("Failed to fetch shops");
@@ -96,15 +98,23 @@ export const NearbyShopLocator = () => {
             title: t("location.found"),
             description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
           });
-        } catch (error) {
+        } catch (error: any) {
           console.error("Error fetching shops:", error);
-          // Fallback to Google Maps search
+          // On timeout or any error, fallback to Google Maps search
+          const isTimeout = error?.name === 'AbortError';
           setShops([{
             name: t("shop.searchGoogle"),
             distance: "-",
-            address: t("shop.fertilizerNearby"),
+            address: isTimeout ? t("location.timeout") : t("shop.fertilizerNearby"),
             mapsUrl: `https://www.google.com/maps/search/fertilizer+krishi+shop/@${latitude},${longitude},14z`,
           }]);
+          if (isTimeout) {
+            toast({
+              title: t("location.timeout"),
+              description: t("shop.searchGoogle"),
+              variant: "destructive",
+            });
+          }
         } finally {
           setIsLoading(false);
         }
