@@ -98,15 +98,23 @@ export const NearbyShopLocator = () => {
             title: t("location.found"),
             description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
           });
-        } catch (error) {
+        } catch (error: any) {
           console.error("Error fetching shops:", error);
-          // Fallback to Google Maps search
+          // On timeout or any error, fallback to Google Maps search
+          const isTimeout = error?.name === 'AbortError';
           setShops([{
             name: t("shop.searchGoogle"),
             distance: "-",
-            address: t("shop.fertilizerNearby"),
+            address: isTimeout ? t("location.timeout") : t("shop.fertilizerNearby"),
             mapsUrl: `https://www.google.com/maps/search/fertilizer+krishi+shop/@${latitude},${longitude},14z`,
           }]);
+          if (isTimeout) {
+            toast({
+              title: t("location.timeout"),
+              description: t("shop.searchGoogle"),
+              variant: "destructive",
+            });
+          }
         } finally {
           setIsLoading(false);
         }
