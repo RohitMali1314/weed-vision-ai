@@ -30,96 +30,131 @@ export const NearbyShopLocator = () => {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        
-        // Search for fertilizer shops using OpenStreetMap Nominatim
-        try {
-          const radius = 5000; // 5km radius
-          
-          // Simplified Overpass query - removed slow 'way' queries
-          const query = `
-            [out:json][timeout:60];
-            (
-              node["shop"="agrarian"](around:${radius},${latitude},${longitude});
-              node["shop"="farm"](around:${radius},${latitude},${longitude});
-              node["name"~"fertilizer|krishi|khad|seeds|agricultural",i](around:${radius},${latitude},${longitude});
-            );
-            out body;
-          `;
+    const handlePosition = async (position: GeolocationPosition) => {
+      const { latitude, longitude } = position.coords;
 
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s client timeout
+      try {
+        const radius = 5000; // 5km radius
 
-          const response = await fetch(
-            `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
-            { signal: controller.signal }
+        const query = `
+          [out:json][timeout:60];
+          (
+            node["shop"="agrarian"](around:${radius},${latitude},${longitude});
+            node["shop"="farm"](around:${radius},${latitude},${longitude});
+            node["name"~"fertilizer|krishi|khad|seeds|agricultural",i](around:${radius},${latitude},${longitude});
           );
-          
-          clearTimeout(timeoutId);
+          out body;
+        `;
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch shops");
-          }
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s client timeout
 
-          const data = await response.json();
-          
-          // Process results
-          const processedShops: Shop[] = data.elements.slice(0, 5).map((element: any) => {
+        const response = await fetch(
+          `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`,
+          { signal: controller.signal }
+        );
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch shops");
+        }
+
+        const data = await response.json();
+
+        const processedShops: Shop[] = data.elements
+          .slice(0, 5)
+          .map((element: any) => {
             const lat = element.lat || element.center?.lat;
             const lon = element.lon || element.center?.lon;
+
+            if (typeof lat !== "number" || typeof lon !== "number") {
+              return null;
+            }
+
             const distance = calculateDistance(latitude, longitude, lat, lon);
-            
+
             return {
               name: element.tags?.name || t("shop.unnamed"),
               distance: `${distance.toFixed(1)} km`,
               address: element.tags?.["addr:street"] || element.tags?.["addr:city"] || t("shop.nearYou"),
               mapsUrl: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,
             };
-          });
+          })
+          .filter((shop): shop is Shop => shop !== null);
 
-          // Sort by distance
-          processedShops.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+        processedShops.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
 
-          if (processedShops.length === 0) {
-            // If no results from Overpass, provide Google Maps search link
-            setShops([{
+        if (processedShops.length === 0) {
+          setShops([
+            {
               name: t("shop.searchGoogle"),
               distance: "-",
               address: t("shop.fertilizerNearby"),
               mapsUrl: `https://www.google.com/maps/search/fertilizer+shop/@${latitude},${longitude},14z`,
-            }]);
-          } else {
-            setShops(processedShops);
-          }
+            },
+          ]);
+        } else {
+          setShops(processedShops);
+        }
 
-          toast({
-            title: t("location.found"),
-            description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
-          });
-        } catch (error: any) {
-          console.error("Error fetching shops:", error);
-          // On timeout or any error, fallback to Google Maps search
-          const isTimeout = error?.name === 'AbortError';
-          setShops([{
+        toast({
+          title: t("location.found"),
+          description: `${processedShops.length || 1} ${t("shop.foundNearby")}`,
+        });
+      } catch (error: any) {
+        console.error("Error fetching shops:", error);
+        const isTimeout = error?.name === "AbortError";
+
+        setShops([
+          {
             name: t("shop.searchGoogle"),
             distance: "-",
             address: isTimeout ? t("location.timeout") : t("shop.fertilizerNearby"),
             mapsUrl: `https://www.google.com/maps/search/fertilizer+krishi+shop/@${latitude},${longitude},14z`,
-          }]);
-          if (isTimeout) {
-            toast({
-              title: t("location.timeout"),
-              description: t("shop.searchGoogle"),
-              variant: "destructive",
-            });
-          }
-        } finally {
-          setIsLoading(false);
+          },
+        ]);
+
+        if (isTimeout) {
+          toast({
+            title: t("location.timeout"),
+            description: t("shop.searchGoogle"),
+            variant: "destructive",
+          });
         }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        void handlePosition(position);
       },
       (error) => {
+        if (error.code === error.TIMEOUT) {
+          // Retry once with relaxed settings for mobile devices
+          navigator.geolocation.getCurrentPosition(
+            (retryPosition) => {
+              void handlePosition(retryPosition);
+            },
+            (retryError) => {
+              setIsLoading(false);
+              if (retryError.code === retryError.PERMISSION_DENIED) {
+                setLocationError(t("location.denied"));
+                return;
+              }
+              setLocationError(t("location.timeout"));
+            },
+            {
+              enableHighAccuracy: false,
+              timeout: 20000,
+              maximumAge: 600000,
+            }
+          );
+          return;
+        }
+
         setIsLoading(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
@@ -128,17 +163,14 @@ export const NearbyShopLocator = () => {
           case error.POSITION_UNAVAILABLE:
             setLocationError(t("location.unavailable"));
             break;
-          case error.TIMEOUT:
-            setLocationError(t("location.timeout"));
-            break;
           default:
             setLocationError(t("location.error"));
         }
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
+        timeout: 15000,
+        maximumAge: 120000,
       }
     );
   };
