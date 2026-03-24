@@ -71,6 +71,42 @@ export type Database = {
         }
         Relationships: []
       }
+      spray_schedules: {
+        Row: {
+          created_at: string
+          crop_name: string
+          device_id: string
+          id: string
+          next_spray_date: string
+          product_name: string
+          quantity: string
+          spray_date: string
+          spray_type: string
+        }
+        Insert: {
+          created_at?: string
+          crop_name: string
+          device_id: string
+          id?: string
+          next_spray_date: string
+          product_name: string
+          quantity: string
+          spray_date: string
+          spray_type: string
+        }
+        Update: {
+          created_at?: string
+          crop_name?: string
+          device_id?: string
+          id?: string
+          next_spray_date?: string
+          product_name?: string
+          quantity?: string
+          spray_date?: string
+          spray_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
