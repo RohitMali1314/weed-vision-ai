@@ -349,10 +349,11 @@ const Index = () => {
               <FertilizerRecommendations fertilizers={results.fertilizers} />
             )}
 
-            {/* Nearby Shop Locator - After Fertilizer Recommendations */}
+            {/* Nearby Shop Locator */}
             <NearbyShopLocator />
 
-
+            {/* Spray Management System */}
+            <SprayManagement />
 
 
             {/* WhatsApp Share Button */}
