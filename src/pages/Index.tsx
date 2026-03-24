@@ -15,6 +15,7 @@ import { NearbyShopLocator } from "@/components/NearbyShopLocator";
 import { FeedbackSection } from "@/components/FeedbackSection";
 import { DashboardStats } from "@/components/DashboardStats";
 import { ScanHistory } from "@/components/ScanHistory";
+import { SprayManagement } from "@/components/SprayManagement";
 import { supabase } from "@/integrations/supabase/client";
 import { getDeviceId } from "@/lib/deviceId";
 
