@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -75,81 +76,75 @@ export default {
         "gradient-secondary": "var(--gradient-secondary)",
         "gradient-glow": "var(--gradient-glow)",
         "gradient-hero": "var(--gradient-hero)",
+        "gradient-mesh": "var(--gradient-mesh)",
       },
       boxShadow: {
         "soft": "var(--shadow-soft)",
         "medium": "var(--shadow-medium)",
         "strong": "var(--shadow-strong)",
         "glow": "var(--shadow-glow)",
+        "glow-accent": "var(--shadow-glow-accent)",
+        "inner-glow": "var(--shadow-inner-glow)",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 8px)",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
         "fade-in": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(20px)"
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)"
-          }
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(30px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "slide-up": {
-          "0%": {
-            transform: "translateY(10px)",
-            opacity: "0"
-          },
-          "100%": {
-            transform: "translateY(0)",
-            opacity: "1"
-          }
+          "0%": { transform: "translateY(10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
         "grow": {
-          "0%": {
-            transform: "scale(0.95)",
-            opacity: "0"
-          },
-          "100%": {
-            transform: "scale(1)",
-            opacity: "1"
-          }
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         },
         "float": {
-          "0%, 100%": {
-            transform: "translateY(0px)"
-          },
-          "50%": {
-            transform: "translateY(-10px)"
-          }
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px -5px hsl(var(--primary) / 0.3)" },
+          "50%": { boxShadow: "0 0 40px -5px hsl(var(--primary) / 0.5)" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        "border-spin": {
+          "0%": { "--angle": "0deg" },
+          "100%": { "--angle": "360deg" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out",
+        "fade-in": "fade-in 0.6s ease-out",
+        "fade-in-up": "fade-in-up 0.7s ease-out",
         "slide-up": "slide-up 0.4s ease-out",
-        "grow": "grow 0.3s ease-out",
-        "float": "float 3s ease-in-out infinite",
+        "grow": "grow 0.4s ease-out",
+        "float": "float 4s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
       },
     },
   },
