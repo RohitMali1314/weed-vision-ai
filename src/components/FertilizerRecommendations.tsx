@@ -66,16 +66,14 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
-  if (!fertilizers || fertilizers.length === 0) {
-    return null;
-  }
+  if (!fertilizers || fertilizers.length === 0) return null;
 
   return (
-    <Card className="shadow-crop border-2 border-wheat/30 bg-card/90 backdrop-blur-sm">
-      <CardHeader className="bg-gradient-to-r from-wheat/10 to-crop/10 border-b border-wheat/20">
+    <Card className="glass border-wheat/15 hover:border-wheat/30 transition-all duration-500">
+      <CardHeader className="border-b border-border/30">
         <CardTitle className="flex items-center gap-3 text-xl">
-          <div className="p-2 bg-wheat/20 rounded-lg">
-            <span className="text-xl">🌿</span>
+          <div className="p-2.5 bg-wheat/15 rounded-xl border border-wheat/20">
+            <span className="text-lg">🌿</span>
           </div>
           {t("fertilizer.title")}
         </CardTitle>
@@ -83,11 +81,10 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
           💊 {t("fertilizer.descriptionFull")}
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-8">
-        <div className="space-y-6">
+      <CardContent className="p-6 md:p-8">
+        <div className="space-y-5">
           {fertilizers.map((fertilizer, index) => {
             const storeUrls = getStoreUrls(fertilizer.name);
-            // Look up translation by type (weed label) or fall back to original
             const translated = fertilizer.type 
               ? getTranslatedFertilizer(fertilizer.type, currentLang) 
               : null;
@@ -96,13 +93,13 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
             const displayFrequency = translated?.frequency || normalizeText(fertilizer.frequency);
             
             return (
-              <Card key={index} className="border-2 border-wheat/30 hover:border-crop/50 transition-all duration-300 hover:shadow-crop animate-fade-in">
-                <CardContent className="p-6">
+              <Card key={index} className="glass-subtle border-wheat/15 hover:border-primary/25 transition-all duration-500 hover-lift group">
+                <CardContent className="p-5 md:p-6">
                   <div className="space-y-4">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-wheat/20">
+                          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-wheat/20 to-crop/10 border border-wheat/20 group-hover:scale-110 transition-transform duration-300">
                             <span className="text-xl">🧪</span>
                           </div>
                           <div>
@@ -110,64 +107,53 @@ export const FertilizerRecommendations = ({ fertilizers }: FertilizerRecommendat
                               {displayName}
                             </h3>
                             {fertilizer.type && (
-                              <Badge variant="secondary" className="bg-soil/10 mt-1">
+                              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 mt-1">
                                 {fertilizer.type}
                               </Badge>
                             )}
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-accent/10 border-accent font-semibold text-base px-3 py-1">
+                      <Badge variant="outline" className="bg-accent/10 border-accent/30 font-bold text-base px-3 py-1.5">
                         {getFertilizerPrice(fertilizer.name)}
                       </Badge>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-wheat/5 border border-wheat/20">
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.quantity")}</p>
-                        <Badge variant="outline" className="bg-crop/10 border-crop">
+                    <div className="grid grid-cols-2 gap-4 p-4 rounded-xl glass-subtle">
+                      <div className="space-y-1.5">
+                        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t("fertilizer.quantity")}</p>
+                        <Badge variant="outline" className="bg-crop/10 border-crop/30 font-medium">
                           {displayQuantity}
                         </Badge>
                       </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground font-medium">{t("fertilizer.frequency")}</p>
+                      <div className="space-y-1.5">
+                        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">{t("fertilizer.frequency")}</p>
                         <div className="flex items-center gap-2">
                           <span className="text-sm">📅</span>
-                          <span className="text-sm font-medium">{displayFrequency}</span>
+                          <span className="text-sm font-medium text-foreground">{displayFrequency}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground">{t("fertilizer.buyFrom")}</p>
+                    <div className="space-y-2.5">
+                      <p className="text-sm font-semibold text-muted-foreground">{t("fertilizer.buyFrom")}</p>
                       <div className="flex flex-wrap gap-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => window.open(storeUrls.amazon, '_blank')}
-                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
-                        >
-                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                          <span className="font-semibold truncate">Amazon</span>
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => window.open(storeUrls.flipkart, '_blank')}
-                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
-                        >
-                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                          <span className="font-semibold truncate">Flipkart</span>
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => window.open(storeUrls.bigbasket, '_blank')}
-                          className="gap-1.5 hover:bg-primary/10 hover:border-primary transition-all hover-scale min-w-0"
-                        >
-                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                          <span className="font-semibold truncate">BigBasket</span>
-                        </Button>
+                        {[
+                          { label: "Amazon", url: storeUrls.amazon },
+                          { label: "Flipkart", url: storeUrls.flipkart },
+                          { label: "BigBasket", url: storeUrls.bigbasket },
+                        ].map((store) => (
+                          <Button 
+                            key={store.label}
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => window.open(store.url, '_blank')}
+                            className="gap-1.5 border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale min-w-0"
+                          >
+                            <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                            <span className="font-semibold truncate">{store.label}</span>
+                          </Button>
+                        ))}
                       </div>
                     </div>
                   </div>

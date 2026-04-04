@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Camera, Upload, X, SwitchCamera, ZoomIn, ZoomOut } from "lucide-react";
+import { Camera, Upload, X, SwitchCamera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -17,10 +17,10 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  // Check if device has multiple cameras
   useEffect(() => {
     const checkCameras = async () => {
       try {
@@ -51,14 +51,12 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
 
   const openCamera = async (mode: 'environment' | 'user' = facingMode) => {
     try {
-      // Stop any existing stream first
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
       
       setIsCameraReady(false);
       
-      // Request high-resolution camera access
       const constraints: MediaStreamConstraints = {
         video: {
           facingMode: { ideal: mode },
@@ -73,9 +71,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       
       try {
         mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-      } catch (error) {
-        // Fallback to basic constraints if high-res fails
-        console.log('High-res failed, trying basic constraints');
+      } catch {
         mediaStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: mode },
           audio: false,
@@ -86,7 +82,6 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       setFacingMode(mode);
       setIsCameraOpen(true);
       
-      // Wait for next render cycle to set video source
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
@@ -101,7 +96,6 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
     } catch (error) {
       console.error('Error accessing camera:', error);
       
-      // If camera access fails, try native file input with capture
       if (fileInputRef.current) {
         fileInputRef.current.setAttribute('capture', 'environment');
         fileInputRef.current.click();
@@ -135,12 +129,10 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
 
-      // Use actual video dimensions for best quality
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
 
       if (context) {
-        // If using front camera, mirror the image
         if (facingMode === 'user') {
           context.translate(canvas.width, 0);
           context.scale(-1, 1);
@@ -167,10 +159,16 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
 
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
+    setIsDragging(false);
     const files = event.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
@@ -189,7 +187,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   if (isCameraOpen) {
     return (
       <div className="space-y-4">
-        <div className="relative bg-black rounded-xl overflow-hidden">
+        <div className="relative rounded-xl overflow-hidden glass">
           <video
             ref={videoRef}
             autoPlay
@@ -198,50 +196,46 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
             className={`w-full h-72 md:h-80 object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`}
           />
           
-          {/* Camera loading overlay */}
           {!isCameraReady && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/70">
-              <div className="text-center text-white">
-                <Camera className="h-12 w-12 mx-auto mb-2 animate-pulse" />
-                <p>{t("camera.starting", "Starting camera...")}</p>
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+              <div className="text-center text-foreground">
+                <Camera className="h-12 w-12 mx-auto mb-2 animate-pulse text-primary" />
+                <p className="text-sm">{t("camera.starting", "Starting camera...")}</p>
               </div>
             </div>
           )}
           
-          {/* Close button */}
           <Button
             variant="outline"
             size="icon"
-            className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm border-border"
+            className="absolute top-3 right-3 glass-subtle"
             onClick={closeCamera}
           >
             <X className="h-4 w-4" />
           </Button>
           
-          {/* Switch camera button */}
           {hasMultipleCameras && (
             <Button
               variant="outline"
               size="icon"
-              className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm border-border"
+              className="absolute top-3 left-3 glass-subtle"
               onClick={switchCamera}
             >
               <SwitchCamera className="h-4 w-4" />
             </Button>
           )}
           
-          {/* Camera mode indicator */}
-          <div className="absolute bottom-3 left-3 bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full text-xs border border-border">
+          <div className="absolute bottom-3 left-3 glass-subtle px-3 py-1.5 text-xs font-medium">
             {facingMode === 'environment' 
               ? t("camera.backCamera", "📷 Back Camera") 
               : t("camera.frontCamera", "🤳 Front Camera")}
           </div>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Button 
             onClick={captureImage} 
-            className="flex-1 h-14 text-lg font-semibold"
+            className="flex-1 h-14 text-lg font-semibold bg-gradient-primary hover:opacity-90 text-primary-foreground shadow-glow"
             disabled={!isCameraReady}
           >
             <Camera className="h-6 w-6 mr-2" />
@@ -250,7 +244,7 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
           <Button 
             variant="outline" 
             onClick={closeCamera}
-            className="px-6 h-14"
+            className="px-6 h-14 border-border/50"
           >
             {t("camera.cancel", "Cancel")}
           </Button>
@@ -263,27 +257,38 @@ export const ImageUpload = ({ onImageSelect }: ImageUploadProps) => {
   return (
     <div className="space-y-4">
       <div
-        className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
+        className={`relative border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer group ${
+          isDragging 
+            ? "border-primary bg-primary/5 scale-[1.02]" 
+            : "border-border/50 hover:border-primary/40 hover:bg-primary/3"
+        }`}
         onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <p className="text-lg font-medium mb-2">Drop your image here</p>
-        <p className="text-muted-foreground mb-4">or click to browse files</p>
-        <p className="text-sm text-muted-foreground">Supports JPG, PNG, WEBP</p>
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 mb-4 group-hover:scale-110 group-hover:bg-primary/15 transition-all duration-300">
+          <Upload className="h-7 w-7 text-primary" />
+        </div>
+        <p className="text-lg font-semibold mb-1 text-foreground">Drop your image here</p>
+        <p className="text-muted-foreground mb-3">or click to browse files</p>
+        <p className="text-xs text-muted-foreground/70">Supports JPG, PNG, WEBP</p>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <Button
           variant="outline"
           onClick={() => fileInputRef.current?.click()}
-          className="flex-1"
+          className="flex-1 h-11 border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
         >
           <Upload className="h-4 w-4 mr-2" />
           Choose File
         </Button>
-        <Button variant="outline" onClick={() => openCamera()} className="flex-1">
+        <Button 
+          variant="outline" 
+          onClick={() => openCamera()} 
+          className="flex-1 h-11 border-border/50 hover:border-accent/30 hover:bg-accent/5 transition-all duration-300"
+        >
           <Camera className="h-4 w-4 mr-2" />
           Use Camera
         </Button>

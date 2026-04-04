@@ -34,7 +34,6 @@ export const DashboardStats = () => {
         const totalDetections = data.reduce((sum, r) => sum + (r.detection_count || 0), 0);
         const avgConf = data.reduce((sum, r) => sum + Number(r.avg_confidence || 0), 0) / data.length;
 
-        // Find top weed
         const weedCounts: Record<string, number> = {};
         data.forEach((r) => {
           const detections = r.detections as any[];
@@ -60,10 +59,10 @@ export const DashboardStats = () => {
   }, []);
 
   const statItems = [
-    { icon: Scan, label: t("dashboard.totalScans", "Total Scans"), value: stats.totalScans, color: "text-primary" },
-    { icon: Target, label: t("dashboard.totalDetections", "Detections Found"), value: stats.totalDetections, color: "text-accent" },
-    { icon: TrendingUp, label: t("dashboard.avgConfidence", "Avg Confidence"), value: `${stats.avgConfidence}%`, color: "text-warning" },
-    { icon: BarChart3, label: t("dashboard.topWeed", "Most Common Weed"), value: stats.topWeed, color: "text-crop" },
+    { icon: Scan, label: t("dashboard.totalScans", "Total Scans"), value: stats.totalScans, gradient: "from-primary/20 to-primary/5", iconColor: "text-primary", borderColor: "border-primary/15" },
+    { icon: Target, label: t("dashboard.totalDetections", "Detections Found"), value: stats.totalDetections, gradient: "from-accent/20 to-accent/5", iconColor: "text-accent", borderColor: "border-accent/15" },
+    { icon: TrendingUp, label: t("dashboard.avgConfidence", "Avg Confidence"), value: `${stats.avgConfidence}%`, gradient: "from-warning/20 to-warning/5", iconColor: "text-warning", borderColor: "border-warning/15" },
+    { icon: BarChart3, label: t("dashboard.topWeed", "Most Common Weed"), value: stats.topWeed, gradient: "from-crop/20 to-crop/5", iconColor: "text-crop", borderColor: "border-crop/15" },
   ];
 
   if (stats.totalScans === 0) return null;
@@ -80,13 +79,15 @@ export const DashboardStats = () => {
           key={item.label}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: i * 0.1, duration: 0.3 }}
+          transition={{ delay: i * 0.1, duration: 0.4 }}
         >
-          <Card className="glass border-border/50 hover:border-primary/30 transition-all duration-300">
-            <CardContent className="p-4 text-center">
-              <item.icon className={`h-5 w-5 mx-auto mb-2 ${item.color}`} />
-              <div className="text-xl md:text-2xl font-bold text-foreground truncate">{item.value}</div>
-              <div className="text-xs text-muted-foreground mt-1">{item.label}</div>
+          <Card className={`glass ${item.borderColor} hover:shadow-glow transition-all duration-500 hover-lift group`}>
+            <CardContent className="p-4 md:p-5">
+              <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${item.gradient} mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-foreground tracking-tight truncate">{item.value}</div>
+              <div className="text-xs text-muted-foreground mt-1 font-medium">{item.label}</div>
             </CardContent>
           </Card>
         </motion.div>
